@@ -1,14 +1,13 @@
-import requests
-import time
 import re
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from facebook_scraper import get_posts, get_page_info
+from facebook_page_scraper import Facebook_scraper
+import pandas as pd
 
 # Set up Selenium driver
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
+# chrome_options.add_argument("user-data-dir=C:/Users/IA_AWEEYIAL/AppData/Local/Google/Chrome/User Data/Default")
 driver = webdriver.Chrome(options=chrome_options)
 
 headers = {
@@ -35,42 +34,56 @@ def get_social_media_links(url):
 
 def crawl_site(url):
     driver.get(url)
-    # time.sleep(5)
-    # soup = BeautifulSoup(driver.page_source, 'html.parser')
     if "facebook.com" in url:
-        regex = r'^https://www\.facebook\.com/(\w+)/?$'
-        match = re.match(regex, url)
-        if match:
-            page_name = match.group(1)
-            print(page_name)  # Output: CareersGov
-            credentials = ("test@test.com", "test")
-            for post in get_posts(page_name, pages=5, credentials=credentials):
-                print(post['text'][:50])
+        res = scrape_facebook(url)
+        if res['success']:
+            print(res['data'])
 
 
-def login_facebook():
-    # Navigate to Facebook login page
-    driver.get("https://www.facebook.com/")
-
-    # Enter login credentials and submit
-    email_input = driver.find_element(By.ID, "email")
-    password_input = driver.find_element(By.ID, "pass")
-    login_button = driver.find_element(By.NAME, "login")
-
-    email_input.send_keys("test@test.com")
-    password_input.send_keys("test")
-    login_button.click()
-
-    # Check if login was successful
-    if "facebook.com/login" not in driver.current_url:
-        print("Login successful!")
+def scrape_facebook(facebook_url):
+    regex = r'^https://www\.facebook\.com/(\w+)/?$'
+    match = re.match(regex, facebook_url)
+    if match:
+        page_name = match.group(1)
+        print(page_name)  # Output: CareersGov
+        scraper = Facebook_scraper(page_name, 10, "chrome", headless=False,
+                                   browser_profile="C:/Users/IA_AWEEYIAL/AppData/Local/Google/Chrome/User Data/Default")
+        json_data = scraper.scrap_to_json()
+        return {"success": True, "data": json_data}
     else:
-        print("Login failed.")
+        return {"success": False, "data": "Invalid URL"}
+
+
+# def login_facebook():
+#     # Navigate to Facebook login page
+#     driver.get("https://www.facebook.com/")
+#
+#     # Enter login credentials and submit
+#     email_input = driver.find_element(By.ID, "email")
+#     password_input = driver.find_element(By.ID, "pass")
+#     login_button = driver.find_element(By.NAME, "login")
+#
+#     email_input.send_keys("test@test.com")
+#     password_input.send_keys("test")
+#     login_button.click()
+#
+#     # Check if login was successful
+#     if "facebook.com/login" not in driver.current_url:
+#         print("Login successful!")
+#     else:
+#         print("Login failed.")
 
 
 if __name__ == '__main__':
-    login_facebook()
-    social_media_links = get_social_media_links("https://www.careers.gov.sg/")
-    print(social_media_links)
-    for link in social_media_links:
-        crawl_site(link)
+    # Replace `url.xlsx` with the actual file name
+    df = pd.read_excel('url.xlsx')
+
+    # Iterate over each row in the DataFrame
+    for index, row in df.iterrows():
+        url = row['url']
+        # Crawl the site for social media links
+        social_media_links = get_social_media_links(url)
+        print(social_media_links)
+        # Crawl the data in the different social media sites
+        for link in social_media_links:
+            crawl_site(link)
