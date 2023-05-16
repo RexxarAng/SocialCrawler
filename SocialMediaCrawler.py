@@ -1,4 +1,6 @@
+import csv
 import re
+import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from facebook_page_scraper import Facebook_scraper
@@ -14,6 +16,7 @@ class SocialMediaCrawler:
         self.url_json_dict = {}
         self.browser_profile = "C:/Users/IA_AWEEYIAL/AppData/Local/Google/Chrome/User Data/Default"
         self.instaloader = instaloader.Instaloader()
+        # Change to your own username, password
         self.instaloader.login("test", "test")
 
     def _start_driver(self):
@@ -34,7 +37,7 @@ class SocialMediaCrawler:
         filtered_links = {link for link in links if any(domain in link for domain in self.social_domains)}
         return filtered_links
 
-    def _scrape_facebook(self, facebook_url):
+    def _scrape_facebook(self, facebook_url, platform_directory):
         regex = r'^https://www\.facebook\.com/(\w+)/?$'
         match = re.match(regex, facebook_url)
         if match:
@@ -42,13 +45,14 @@ class SocialMediaCrawler:
             print(page_name)  # Output: CareersGov
             scraper = Facebook_scraper(page_name, 10, "chrome", headless=False,
                                        browser_profile=self.browser_profile)
+            scraper.scrap_to_csv(facebook_url.split("//")[-1].replace("/", "-"), platform_directory)
             json_data = scraper.scrap_to_json()
             self.url_json_dict[facebook_url] = json_data
             return {"success": True, "data": json_data}
         else:
             return {"success": False, "data": "Invalid URL"}
 
-    def _scrape_instagram(self, url):
+    def _scrape_instagram(self, url, platform_directory):
 
         # Instagram Profile URL regex
         profile_regex = r'^https:\/\/www\.instagram\.com\/([A-Za-z0-9_]+)(?:\/channel)?\/?$'
@@ -62,19 +66,41 @@ class SocialMediaCrawler:
             profile_value = re.match(profile_regex, url).group(1)
             insta_profile = instaloader.Profile.from_username(self.instaloader.context, profile_value)
 
-            num_posts_to_retrieve = 10
-            # Counter variable
-            count = 0
-            for post in insta_profile.get_posts():
-                # Access the properties and methods of the Post object
-                print(f'Post caption: {post.caption}')
-                print(f'Number of likes: {post.likes}')
-                # Increment the counter
-                count += 1
+            # Prepare the CSV file and column names
+            csv_file_path = os.path.join(platform_directory, url.split("//")[-1].replace("/", "-") + '.csv')
 
-                # Break the loop if the desired number of posts is reached
-                if count >= num_posts_to_retrieve:
-                    break
+            # Prepare the CSV file and column names
+            fieldnames = ['Date', 'URL', 'Captions', 'Likes']  # Replace with your column names
+
+            # Create the CSV file and write the header
+            with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
+                csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+                csv_writer.writeheader()
+                num_posts_to_retrieve = 10
+                # Counter variable
+                count = 0
+                for post in insta_profile.get_posts():
+                    # Access the properties and methods of the Post object
+                    print(f'Post caption: {post.caption}')
+                    print(f'Number of likes: {post.likes}')
+
+                    # Extract relevant data from the node and organize it into a dictionary
+                    record = {
+                        'Date': post.date,
+                        'URL': post.url,
+                        'Captions': post.caption,
+                        'Likes': post.likes
+                    }
+
+                    # Write the record to the CSV file
+                    csv_writer.writerow(record)
+
+                    # Increment the counter
+                    count += 1
+
+                    # Break the loop if the desired number of posts is reached
+                    if count >= num_posts_to_retrieve:
+                        break
             return insta_profile.get_posts()
         # To test if this works
         elif re.match(post_regex, url):
@@ -101,24 +127,35 @@ class SocialMediaCrawler:
             return False
         return False
 
-    def _crawl_site(self, url):
+    def _crawl_site(self, url, main_directory):
         is_broken = self._check_broken_link(url)
         if is_broken:
             self.broken_links.add(url)
             return
         if "facebook.com" in url:
-            res = self._scrape_facebook(url)
+            platform_directory = os.path.join(main_directory, "Facebook")
+            os.makedirs(platform_directory, exist_ok=True)
+            res = self._scrape_facebook(url, platform_directory)
             print(res)
         if "instagram.com" in url:
-            res = self._scrape_instagram(url)
+            platform_directory = os.path.join(main_directory, "Instagram")
+            os.makedirs(platform_directory, exist_ok=True)
+            res = self._scrape_instagram(url, platform_directory)
             print(res)
 
     def crawl(self, url_file):
         df = pd.read_excel(url_file)
+        # Create the "data" directory if it doesn't exist
+        data_directory = os.path.join(os.getcwd(), "data")
+        os.makedirs(data_directory, exist_ok=True)
+
         for index, row in df.iterrows():
             url = row['url']
+            # Create the main directory with the main URL name inside the "data" directory
+            main_directory = os.path.join(data_directory, url.split("//")[-1].replace("/", "-"))
+            os.makedirs(main_directory, exist_ok=True)
             social_media_links = self._get_social_media_links(url)
             print(social_media_links)
             for link in social_media_links:
-                self._crawl_site(link)
+                self._crawl_site(link, main_directory)
         self.driver.quit()
