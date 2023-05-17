@@ -1,0 +1,11 @@
+{
+  "browser_profile": "C:/Users/IA_AWEEYIAL/AppData/Local/Google/Chrome/User Data/Default",
+  "instagram_credentials": {
+      "username": "test",
+      "password": "test"
+  },
+  "urls": [
+    "https://www.dsta.gov.sg/home",
+    "https://www.tech.gov.sg/"
+  ]
+}
