@@ -1,6 +1,7 @@
 import os
 import re
 from facebook_page_scraper import Facebook_scraper
+from profanity_check import predict, predict_prob
 
 
 class FacebookCrawler:
@@ -33,14 +34,11 @@ class FacebookCrawler:
     def analyse_facebook_posts(self):
         # Iterate over each URL in the data
         for url, url_data in self.data.items():
+            url_data = eval(url_data)
             # Iterate over each post in the URL data
             for post_id, post_data in url_data.items():
                 # Check if the 'content' field exists in the post data
                 if 'content' in post_data:
                     content = post_data['content']
-
-                    # Perform your analysis on the 'content' field
-                    # For example, you can print it or perform further processing
                     print(f"Content: {content}")
-
-                    # Add your analysis code here
+                    print(f"Profanity Prediction: {predict_prob([content])}")
