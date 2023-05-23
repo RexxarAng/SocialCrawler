@@ -1,21 +1,20 @@
 import csv
+import json
 import os
 import re
 from instaloader import instaloader
 
 
 class InstagramCrawler:
-    def __init__(self, username, password, url_dict_json):
+    def __init__(self, username, password):
         self.instaloader = instaloader.Instaloader()
         self.instaloader.login(username, password)
+        self.data = {}
 
     def scrape_instagram(self, url, platform_directory, num_posts_to_retrieve=10):
 
         # Instagram Profile URL regex
         profile_regex = r'^https:\/\/www\.instagram\.com\/([A-Za-z0-9_]+)(?:\/channel)?\/?$'
-
-        # Instagram Post URL regex
-        post_regex = r'^https:\/\/www\.instagram\.com\/p\/(.+)\/$'
 
         if re.match(profile_regex, url):
             # Matched Instagram Profile URL
@@ -35,6 +34,7 @@ class InstagramCrawler:
                 csv_writer.writeheader()
                 # Counter variable
                 count = 0
+                data = []
                 for post in insta_profile.get_posts():
                     # Access the properties and methods of the Post object
                     print(f'Post caption: {post.caption}')
@@ -48,6 +48,9 @@ class InstagramCrawler:
                         'Likes': post.likes
                     }
 
+                    # Append the record to the data list
+                    data.append(record)
+
                     # Write the record to the CSV file
                     csv_writer.writerow(record)
 
@@ -57,15 +60,11 @@ class InstagramCrawler:
                     # Break the loop if the desired number of posts is reached
                     if count >= num_posts_to_retrieve:
                         break
-            return insta_profile.get_posts()
-        # To test if this works
-        elif re.match(post_regex, url):
-            # Matched Instagram Post URL
-            print(f'{url} is an Instagram post URL.')
-            post_value = re.match(post_regex, url).group(1)
-            insta_post = instaloader.Post.from_mediaid(self.instaloader.context, post_value)
-            return insta_post
+
+            # Store the data list as JSON in self.url_dict_json
+            self.data[url] = data
+
+            return {"success": True, "data": insta_profile.get_posts()}
         else:
             # No match
-            print(f'{url} does not match any of the patterns.')
-            return "No valid instagram url"
+            return {"success": False, "data": "URL unsupported"}

@@ -14,29 +14,28 @@ class SocialMediaCrawler:
         os.makedirs(self.data_directory, exist_ok=True)
         self.social_domains = ['facebook.com', 'twitter.com', 'instagram.com']
         self.config_file = config_file
-        self._read_config()
-        self.url_json_dict = {}
+        self.__read_config()
         self.broken_links = {}
-        self._start_driver()
+        self.unchecked_links = []
+        self.__start_driver()
         self.facebook_profile_regex = r'^https://www\.facebook\.com/(\w+)/?$'
         # need to specify a browser profile with facebook logged in (asia region requires login)
         self.browser_profile = self.config_data['browser_profile']
-        self.facebook_crawler = FacebookCrawler(self.facebook_profile_regex, self.browser_profile, self.url_json_dict)
+        self.facebook_crawler = FacebookCrawler(self.facebook_profile_regex, self.browser_profile)
         # Change to your own username, password in the config.json file
         self.instagram_crawler = InstagramCrawler(self.config_data['instagram_credentials']['username'],
-                                                  self.config_data['instagram_credentials']['password'],
-                                                  self.url_json_dict)
+                                                  self.config_data['instagram_credentials']['password'])
 
-    def _read_config(self):
+    def __read_config(self):
         with open(self.config_file, 'r') as file:
             self.config_data = json.load(file)
 
-    def _start_driver(self):
+    def __start_driver(self):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=chrome_options)
 
-    def _get_social_media_links(self, url):
+    def __get_social_media_links(self, url):
         self.driver.get(url)
         content = self.driver.page_source
         soup = BeautifulSoup(content, 'html.parser')
@@ -48,7 +47,7 @@ class SocialMediaCrawler:
         filtered_links = {link for link in links if any(domain in link for domain in self.social_domains)}
         return filtered_links
 
-    def _check_broken_link(self, url):
+    def __check_broken_link(self, url):
         is_facebook_profile = re.match(self.facebook_profile_regex, url)
         if is_facebook_profile:
             self.driver.get(url)
@@ -60,8 +59,9 @@ class SocialMediaCrawler:
             return False
         return False
 
-    def _crawl_site(self, url, main_directory):
-        is_broken = self._check_broken_link(url)
+    def __crawl_site(self, url, main_directory):
+        is_broken = self.__check_broken_link(url)
+        res = {"success": False, "data": "URL unsupported"}  # Initialize res with a default value
         if is_broken:
             self.broken_links.add(url)
             return
@@ -75,14 +75,19 @@ class SocialMediaCrawler:
             os.makedirs(platform_directory, exist_ok=True)
             res = self.instagram_crawler.scrape_instagram(url, platform_directory)
             print(res)
+        if not res["success"]:
+            self.unchecked_links.append(url)
 
     def crawl(self):
         for url in self.config_data['urls']:
             # Create the main directory with the main URL name inside the "data" directory
             main_directory = os.path.join(self.data_directory, url.split("//")[-1].replace("/", "-"))
             os.makedirs(main_directory, exist_ok=True)
-            social_media_links = self._get_social_media_links(url)
+            social_media_links = self.__get_social_media_links(url)
             print(social_media_links)
             for link in social_media_links:
-                self._crawl_site(link, main_directory)
+                self.__crawl_site(link, main_directory)
+        print(f"Facebook Data: {self.facebook_crawler.data}")
+        print(f"Instagram Data: {self.instagram_crawler.data}")
+        print(f"Unchecked Links: {self.unchecked_links}")
         self.driver.quit()
