@@ -1,8 +1,8 @@
 import csv
-import json
 import os
 import re
 from instaloader import instaloader
+from profanity_check import predict, predict_prob
 
 
 class InstagramCrawler:
@@ -68,3 +68,13 @@ class InstagramCrawler:
         else:
             # No match
             return {"success": False, "data": "URL unsupported"}
+
+    def analyse_instagram_posts(self):
+        for url, posts in self.data.items():
+            for post in posts:
+                caption = post['Captions']
+                profanity_probability = predict_prob([caption])
+                print(f"URL: {url} Captions: {caption}")
+                print(f"Profanity Prediction: {profanity_probability}")
+                post['ProfanityProbability'] = profanity_probability
+

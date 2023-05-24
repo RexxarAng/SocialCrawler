@@ -40,5 +40,7 @@ class FacebookCrawler:
                 # Check if the 'content' field exists in the post data
                 if 'content' in post_data:
                     content = post_data['content']
+                    profanity_probability = predict_prob([content])
                     print(f"Content: {content}")
                     print(f"Profanity Prediction: {predict_prob([content])}")
+                    post_data['ProfanityProbability'] = profanity_probability

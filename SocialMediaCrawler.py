@@ -39,11 +39,11 @@ class SocialMediaCrawler:
         self.driver.get(url)
         content = self.driver.page_source
         soup = BeautifulSoup(content, 'html.parser')
-        links = []
+        links = set()
         for a_tag in soup.find_all('a'):
             href = a_tag.get('href')
             if href is not None:
-                links.append(href)
+                links.add(href)
         filtered_links = {link for link in links if any(domain in link for domain in self.social_domains)}
         return filtered_links
 
