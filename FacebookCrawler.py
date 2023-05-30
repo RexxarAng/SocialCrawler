@@ -1,3 +1,4 @@
+import json
 import os
 import re
 from facebook_page_scraper import Facebook_scraper
@@ -32,9 +33,10 @@ class FacebookCrawler:
             return {"success": False, "data": "URL unsupported"}
 
     def analyse_facebook_posts(self):
+        print("Analysing facebook posts")
         # Iterate over each URL in the data
         for url, url_data in self.data.items():
-            url_data = eval(url_data)
+            url_data = json.loads(url_data)
             # Iterate over each post in the URL data
             for post_id, post_data in url_data.items():
                 # Check if the 'content' field exists in the post data
@@ -44,3 +46,5 @@ class FacebookCrawler:
                     print(f"Content: {content}")
                     print(f"Profanity Prediction: {predict_prob([content])}")
                     post_data['ProfanityProbability'] = profanity_probability
+            # Update the url_data in self.data with the modified url_data
+            self.data[url] = url_data

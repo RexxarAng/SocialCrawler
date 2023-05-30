@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from FacebookCrawler import FacebookCrawler
 from InstagramCrawler import InstagramCrawler
+from TwitterCrawler import TwitterCrawler
 
 
 class SocialMediaCrawler:
@@ -15,16 +16,18 @@ class SocialMediaCrawler:
         self.social_domains = ['facebook.com', 'twitter.com', 'instagram.com']
         self.config_file = config_file
         self.__read_config()
-        self.broken_links = {}
+        self.broken_links = set()
         self.unchecked_links = []
         self.__start_driver()
         self.facebook_profile_regex = r'^https://www\.facebook\.com/(\w+)/?$'
+        self.instagram_profile_regex = r'^https:\/\/www\.instagram\.com\/([A-Za-z0-9_]+)(?:\/channel)?\/?$'
         # need to specify a browser profile with facebook logged in (asia region requires login)
         self.browser_profile = self.config_data['browser_profile']
         self.facebook_crawler = FacebookCrawler(self.facebook_profile_regex, self.browser_profile)
         # Change to your own username, password in the config.json file
         self.instagram_crawler = InstagramCrawler(self.config_data['instagram_credentials']['username'],
                                                   self.config_data['instagram_credentials']['password'])
+        self.twitter_crawler = TwitterCrawler()
 
     def __read_config(self):
         with open(self.config_file, 'r') as file:
@@ -49,13 +52,19 @@ class SocialMediaCrawler:
 
     def __check_broken_link(self, url):
         is_facebook_profile = re.match(self.facebook_profile_regex, url)
+        is_instagram_profile = re.match(self.instagram_profile_regex, url)
         if is_facebook_profile:
             self.driver.get(url)
             error_message = "This content isn't available right now"
             if error_message in self.driver.page_source:
-                # print(f"The page {url} is broken.")
                 return True
             # print(f"The page {url} is not broken.")
+            return False
+        elif is_instagram_profile:
+            self.driver.get(url)
+            error_message = "Sorry, this page isn't available."
+            if error_message in self.driver.page_source:
+                return True
             return False
         return False
 
@@ -69,12 +78,15 @@ class SocialMediaCrawler:
             platform_directory = os.path.join(main_directory, "Facebook")
             os.makedirs(platform_directory, exist_ok=True)
             res = self.facebook_crawler.scrape_facebook(url, platform_directory)
-            print(res)
         elif "instagram.com" in url:
-            platform_directory = os.path.join(main_directory, "Instagram")
+            pass
+            # platform_directory = os.path.join(main_directory, "Instagram")
+            # os.makedirs(platform_directory, exist_ok=True)
+            # res = self.instagram_crawler.scrape_instagram(url, platform_directory)
+        elif "twitter.com" in url:
+            platform_directory = os.path.join(main_directory, "Twitter")
             os.makedirs(platform_directory, exist_ok=True)
-            res = self.instagram_crawler.scrape_instagram(url, platform_directory)
-            print(res)
+            res = self.twitter_crawler.scrape_twitter(url, platform_directory)
         if not res["success"]:
             self.unchecked_links.append(url)
 

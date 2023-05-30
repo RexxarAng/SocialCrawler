@@ -64,7 +64,7 @@ class InstagramCrawler:
             # Store the data list as JSON in self.url_dict_json
             self.data[url] = data
 
-            return {"success": True, "data": insta_profile.get_posts()}
+            return {"success": True, "data": data}
         else:
             # No match
             return {"success": False, "data": "URL unsupported"}

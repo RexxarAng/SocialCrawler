@@ -50,7 +50,7 @@
             </tr>
             {% for data in platform_data %}
                 <tr>
-                    <td>{{ data.url }}</td>
+                    <td><a href={{ data.url }}>{{ data.url | truncate_url }}</a></td>
                     <td>{{ data.caption if platform == 'Instagram' else data.content }}</td>
                     <td>{{ data.probability }}</td>
                 </tr>
