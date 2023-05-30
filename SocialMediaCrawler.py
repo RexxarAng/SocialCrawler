@@ -20,7 +20,8 @@ class SocialMediaCrawler:
         self.unchecked_links = []
         self.__start_driver()
         self.facebook_profile_regex = r'^https://www\.facebook\.com/(\w+)/?$'
-        self.instagram_profile_regex = r'^https:\/\/www\.instagram\.com\/([A-Za-z0-9_]+)(?:\/channel)?\/?$'
+        self.instagram_profile_regex = r'^https:\/\/www\.instagram\.com\/(?!(?:p|reel)\/)([A-Za-z0-9_]+).*'
+
         # need to specify a browser profile with facebook logged in (asia region requires login)
         self.browser_profile = self.config_data['browser_profile']
         self.facebook_crawler = FacebookCrawler(self.facebook_profile_regex, self.browser_profile)
@@ -79,10 +80,9 @@ class SocialMediaCrawler:
             os.makedirs(platform_directory, exist_ok=True)
             res = self.facebook_crawler.scrape_facebook(url, platform_directory)
         elif "instagram.com" in url:
-            pass
-            # platform_directory = os.path.join(main_directory, "Instagram")
-            # os.makedirs(platform_directory, exist_ok=True)
-            # res = self.instagram_crawler.scrape_instagram(url, platform_directory)
+            platform_directory = os.path.join(main_directory, "Instagram")
+            os.makedirs(platform_directory, exist_ok=True)
+            res = self.instagram_crawler.scrape_instagram(url, platform_directory)
         elif "twitter.com" in url:
             platform_directory = os.path.join(main_directory, "Twitter")
             os.makedirs(platform_directory, exist_ok=True)

@@ -31,8 +31,18 @@ class TwitterCrawler:
         if username is None:
             return {"success": False, "data": "Invalid URL"}
 
-        # Prepare the CSV file and column names
-        csv_file_path = os.path.join(platform_directory, twitter_url.split("//")[-1].replace("/", "-") + '.csv')
+        # Define a regular expression pattern to match non-allowed characters
+        pattern = r'[<>:"/\\|?*]'
+
+        # Replace non-allowed characters with underscores
+        filename = re.sub(pattern, '_', twitter_url.split("//")[-1])
+
+        # Append the '.csv' extension to the modified filename
+        csv_file_path = os.path.join(platform_directory, filename + '.csv')
+
+        if os.path.exists(csv_file_path):
+            os.remove(csv_file_path)
+
         # Prepare the CSV file and column names
         fieldnames = ['Date', 'URL', 'Content']
 

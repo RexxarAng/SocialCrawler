@@ -61,15 +61,15 @@ class SocialMediaReportGenerator:
                 content = tweet['Content']
                 url = tweet['URL']
                 probability = tweet['ProfanityProbability']
-                instagram_report_data.append(
+                twitter_report_data.append(
                     {'platform': "Twitter", 'url': url, 'content': content, 'probability': probability})
 
         # Render the template with the data
         report_data = []
-        if instagram_report_data:
-            report_data.append(instagram_report_data)
         if facebook_report_data:
             report_data.append(facebook_report_data)
+        if instagram_report_data:
+            report_data.append(instagram_report_data)
         if twitter_report_data:
             report_data.append(twitter_report_data)
         # Render the template with the data

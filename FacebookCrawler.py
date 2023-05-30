@@ -17,15 +17,21 @@ class FacebookCrawler:
             page_name = match.group(1)
             print(page_name)  # Output: CareersGov
 
-            file_name = facebook_url.split("//")[-1].replace("/", "-")
-            file_path = os.path.join(platform_directory, file_name + ".csv")
+            # Define a regular expression pattern to match non-allowed characters
+            pattern = r'[<>:"/\\|?*]'
 
-            if os.path.exists(file_path):
-                os.remove(file_path)
+            # Replace non-allowed characters with underscores
+            filename = re.sub(pattern, '_', facebook_url.split("//")[-1])
+
+            # Append the '.csv' extension to the modified filename
+            csv_file_path = os.path.join(platform_directory, filename + '.csv')
+
+            if os.path.exists(csv_file_path):
+                os.remove(csv_file_path)
 
             scraper = Facebook_scraper(page_name, num_posts_to_retrieve, "chrome", headless=True,
                                        browser_profile=self.browser_profile)
-            scraper.scrap_to_csv(file_name, platform_directory)
+            scraper.scrap_to_csv(filename, platform_directory)
             json_data = scraper.scrap_to_json()
             self.data[facebook_url] = json_data
             return {"success": True, "data": json_data}

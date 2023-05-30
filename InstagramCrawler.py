@@ -14,7 +14,7 @@ class InstagramCrawler:
     def scrape_instagram(self, url, platform_directory, num_posts_to_retrieve=10):
 
         # Instagram Profile URL regex
-        profile_regex = r'^https:\/\/www\.instagram\.com\/([A-Za-z0-9_]+)(?:\/channel)?\/?$'
+        profile_regex = r'^https:\/\/www\.instagram\.com\/(?!(?:p|reel)\/)([A-Za-z0-9_]+).*'
 
         if re.match(profile_regex, url):
             # Matched Instagram Profile URL
@@ -22,8 +22,17 @@ class InstagramCrawler:
             profile_value = re.match(profile_regex, url).group(1)
             insta_profile = instaloader.Profile.from_username(self.instaloader.context, profile_value)
 
-            # Prepare the CSV file and column names
-            csv_file_path = os.path.join(platform_directory, url.split("//")[-1].replace("/", "-") + '.csv')
+            # Define a regular expression pattern to match non-allowed characters
+            pattern = r'[<>:"/\\|?*]'
+
+            # Replace non-allowed characters with underscores
+            filename = re.sub(pattern, '_', url.split("//")[-1])
+
+            # Append the '.csv' extension to the modified filename
+            csv_file_path = os.path.join(platform_directory, filename + '.csv')
+
+            if os.path.exists(csv_file_path):
+                os.remove(csv_file_path)
 
             # Prepare the CSV file and column names
             fieldnames = ['Date', 'URL', 'Captions', 'Likes']
@@ -43,7 +52,7 @@ class InstagramCrawler:
                     # Extract relevant data from the node and organize it into a dictionary
                     record = {
                         'Date': post.date,
-                        'URL': post.url,
+                        'URL': f"https://www.instagram.com/p/{post.shortcode}",
                         'Captions': post.caption,
                         'Likes': post.likes
                     }
