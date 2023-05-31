@@ -14,7 +14,7 @@ def truncate_url(url, max_length=30):
 
 
 class SocialMediaReportGenerator:
-    def generate_html_report(self, instagram_data, facebook_data, twitter_data, unchecked_links):
+    def generate_html_report(self, instagram_data, facebook_data, twitter_data, broken_links, unchecked_links):
         # Get the absolute path of the script
         script_path = os.path.abspath(__file__)
 
@@ -73,7 +73,7 @@ class SocialMediaReportGenerator:
         if twitter_report_data:
             report_data.append(twitter_report_data)
         # Render the template with the data
-        html_output = template.render(report_data=report_data, unchecked_links=unchecked_links)
+        html_output = template.render(report_data=report_data, broken_links=broken_links, unchecked_links=unchecked_links)
 
         # Create the reports folder if it doesn't exist
         os.makedirs("reports", exist_ok=True)

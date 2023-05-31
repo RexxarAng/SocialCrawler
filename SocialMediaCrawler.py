@@ -3,6 +3,9 @@ import re
 import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from FacebookCrawler import FacebookCrawler
 from InstagramCrawler import InstagramCrawler
 from TwitterCrawler import TwitterCrawler
@@ -18,7 +21,6 @@ class SocialMediaCrawler:
         self.__read_config()
         self.broken_links = set()
         self.unchecked_links = []
-        self.__start_driver()
         self.facebook_profile_regex = r'^https://www\.facebook\.com/(\w+)/?$'
         self.instagram_profile_regex = r'^https:\/\/www\.instagram\.com\/(?!(?:p|reel)\/)([A-Za-z0-9_]+).*'
 
@@ -29,6 +31,7 @@ class SocialMediaCrawler:
         self.instagram_crawler = InstagramCrawler(self.config_data['instagram_credentials']['username'],
                                                   self.config_data['instagram_credentials']['password'])
         self.twitter_crawler = TwitterCrawler()
+        self.__start_driver()
 
     def __read_config(self):
         with open(self.config_file, 'r') as file:
@@ -36,6 +39,7 @@ class SocialMediaCrawler:
 
     def __start_driver(self):
         chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument("--user-data-dir="+self.browser_profile)
         chrome_options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=chrome_options)
 
@@ -57,16 +61,25 @@ class SocialMediaCrawler:
         if is_facebook_profile:
             self.driver.get(url)
             error_message = "This content isn't available right now"
-            if error_message in self.driver.page_source:
+            try:
+                # Wait for the error message to appear in the page source
+                WebDriverWait(self.driver, 5).until(
+                    EC.text_to_be_present_in_element((By.TAG_NAME, 'body'), error_message)
+                )
                 return True
-            # print(f"The page {url} is not broken.")
-            return False
+            except:
+                return False
         elif is_instagram_profile:
             self.driver.get(url)
             error_message = "Sorry, this page isn't available."
-            if error_message in self.driver.page_source:
+            try:
+                # Wait for the error message to appear in the page source
+                WebDriverWait(self.driver, 5).until(
+                    EC.text_to_be_present_in_element((By.TAG_NAME, 'body'), error_message)
+                )
                 return True
-            return False
+            except:
+                return False
         return False
 
     def __crawl_site(self, url, main_directory):
@@ -96,10 +109,13 @@ class SocialMediaCrawler:
             main_directory = os.path.join(self.data_directory, url.split("//")[-1].replace("/", "-"))
             os.makedirs(main_directory, exist_ok=True)
             social_media_links = self.__get_social_media_links(url)
+            # social_media_links.add("https://www.facebook.com/SingaporeDSTA555")
+            # social_media_links.add("https://www.instagram.com/SingaporeDSTA555")
             print(social_media_links)
             for link in social_media_links:
                 self.__crawl_site(link, main_directory)
         print(f"Facebook Data: {self.facebook_crawler.data}")
-        print(f"Instagram Data: {self.instagram_crawler.data}")
+        # print(f"Instagram Data: {self.instagram_crawler.data}")
         print(f"Unchecked Links: {self.unchecked_links}")
+        print(f"Broken Links: {self.broken_links}")
         self.driver.quit()

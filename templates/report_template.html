@@ -57,6 +57,17 @@
             {% endfor %}
         </table>
     {% endfor %}
+    <h1>Broken Links</h1>
+        <table>
+            <tr>
+                <th>URL</th>
+            </tr>
+            {% for link in broken_links %}
+                <tr>
+                    <td><a href={{ link }}>{{ link }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
     <h1>Unchecked Links</h1>
         <table>
             <tr>

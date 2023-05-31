@@ -11,5 +11,6 @@ if __name__ == '__main__':
     reportGenerator.generate_html_report(crawler.instagram_crawler.data,
                                          crawler.facebook_crawler.data,
                                          crawler.twitter_crawler.data,
+                                         crawler.broken_links,
                                          crawler.unchecked_links)
 
