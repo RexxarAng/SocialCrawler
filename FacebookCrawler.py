@@ -6,13 +6,13 @@ from profanity_check import predict, predict_prob
 
 
 class FacebookCrawler:
-    def __init__(self, facebook_profile_regex, browser_profile):
-        self.facebook_profile_regex = facebook_profile_regex
+    def __init__(self, browser_profile):
+        self.profile_regex = r'^https://www\.facebook\.com/(\w+)/?$'
         self.browser_profile = browser_profile
         self.data = {}
 
     def scrape_facebook(self, facebook_url, platform_directory, num_posts_to_retrieve=10):
-        match = re.match(self.facebook_profile_regex, facebook_url)
+        match = re.match(self.profile_regex, facebook_url)
         if match:
             page_name = match.group(1)
             print(page_name)  # Output: CareersGov

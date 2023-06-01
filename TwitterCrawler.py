@@ -9,13 +9,11 @@ class TwitterCrawler:
 
     def __init__(self):
         self.data = {}
+        self.profile_regex = r"(?:https?:\/\/)?(?:www\.)?twitter\.com\/([a-zA-Z0-9_]{1,15})"
 
     def __extract_twitter_username(self, url):
-        # Regular expression pattern to extract the Twitter username
-        pattern = r"(?:https?:\/\/)?(?:www\.)?twitter\.com\/([a-zA-Z0-9_]{1,15})"
-
         # Extract the Twitter username using the pattern
-        match = re.search(pattern, url)
+        match = re.search(self.profile_regex, url)
 
         # Check if a match is found and return the username
         if match:

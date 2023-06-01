@@ -9,17 +9,17 @@ class InstagramCrawler:
     def __init__(self, username, password):
         self.instaloader = instaloader.Instaloader()
         self.instaloader.login(username, password)
+        self.profile_regex = r'^https:\/\/www\.instagram\.com\/(?!(?:p|reel)\/)([A-Za-z0-9_]+).*'
         self.data = {}
 
     def scrape_instagram(self, url, platform_directory, num_posts_to_retrieve=10):
 
         # Instagram Profile URL regex
-        profile_regex = r'^https:\/\/www\.instagram\.com\/(?!(?:p|reel)\/)([A-Za-z0-9_]+).*'
 
-        if re.match(profile_regex, url):
+        if re.match(self.profile_regex, url):
             # Matched Instagram Profile URL
             print(f'{url} is an Instagram profile URL.')
-            profile_value = re.match(profile_regex, url).group(1)
+            profile_value = re.match(self.profile_regex, url).group(1)
             insta_profile = instaloader.Profile.from_username(self.instaloader.context, profile_value)
 
             # Define a regular expression pattern to match non-allowed characters

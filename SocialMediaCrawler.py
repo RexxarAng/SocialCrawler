@@ -21,12 +21,9 @@ class SocialMediaCrawler:
         self.__read_config()
         self.broken_links = set()
         self.unchecked_links = []
-        self.facebook_profile_regex = r'^https://www\.facebook\.com/(\w+)/?$'
-        self.instagram_profile_regex = r'^https:\/\/www\.instagram\.com\/(?!(?:p|reel)\/)([A-Za-z0-9_]+).*'
-
         # need to specify a browser profile with facebook logged in (asia region requires login)
         self.browser_profile = self.config_data['browser_profile']
-        self.facebook_crawler = FacebookCrawler(self.facebook_profile_regex, self.browser_profile)
+        self.facebook_crawler = FacebookCrawler(self.browser_profile)
         # Change to your own username, password in the config.json file
         self.instagram_crawler = InstagramCrawler(self.config_data['instagram_credentials']['username'],
                                                   self.config_data['instagram_credentials']['password'])
@@ -55,35 +52,34 @@ class SocialMediaCrawler:
         filtered_links = {link for link in links if any(domain in link for domain in self.social_domains)}
         return filtered_links
 
-    def __check_broken_link(self, url):
-        is_facebook_profile = re.match(self.facebook_profile_regex, url)
-        is_instagram_profile = re.match(self.instagram_profile_regex, url)
+    def __check_broken_link(self, url, error_message):
+        self.driver.get(url)
+        try:
+            # Wait for the error message to appear in the page source
+            WebDriverWait(self.driver, 5).until(
+                EC.text_to_be_present_in_element((By.TAG_NAME, 'body'), error_message)
+            )
+            return True
+        except:
+            return False
+
+    def __check_broken_link_platform(self, url):
+        is_facebook_profile = re.match(self.facebook_crawler.profile_regex, url)
+        is_instagram_profile = re.match(self.instagram_crawler.profile_regex, url)
+        is_twitter_profile = re.match(self.twitter_crawler.profile_regex, url)
         if is_facebook_profile:
-            self.driver.get(url)
             error_message = "This content isn't available right now"
-            try:
-                # Wait for the error message to appear in the page source
-                WebDriverWait(self.driver, 5).until(
-                    EC.text_to_be_present_in_element((By.TAG_NAME, 'body'), error_message)
-                )
-                return True
-            except:
-                return False
+            return self.__check_broken_link(url, error_message)
         elif is_instagram_profile:
-            self.driver.get(url)
             error_message = "Sorry, this page isn't available."
-            try:
-                # Wait for the error message to appear in the page source
-                WebDriverWait(self.driver, 5).until(
-                    EC.text_to_be_present_in_element((By.TAG_NAME, 'body'), error_message)
-                )
-                return True
-            except:
-                return False
+            return self.__check_broken_link(url, error_message)
+        elif is_twitter_profile:
+            error_message = "This account doesn’t exist"
+            return self.__check_broken_link(url, error_message)
         return False
 
     def __crawl_site(self, url, main_directory):
-        is_broken = self.__check_broken_link(url)
+        is_broken = self.__check_broken_link_platform(url)
         res = {"success": False, "data": "URL unsupported"}  # Initialize res with a default value
         if is_broken:
             self.broken_links.add(url)
@@ -109,8 +105,9 @@ class SocialMediaCrawler:
             main_directory = os.path.join(self.data_directory, url.split("//")[-1].replace("/", "-"))
             os.makedirs(main_directory, exist_ok=True)
             social_media_links = self.__get_social_media_links(url)
-            # social_media_links.add("https://www.facebook.com/SingaporeDSTA555")
-            # social_media_links.add("https://www.instagram.com/SingaporeDSTA555")
+            social_media_links.add("https://www.facebook.com/SingaporeDSTA555")
+            social_media_links.add("https://www.instagram.com/SingaporeDSTA555")
+            social_media_links.add("https://www.twitter.com/SingaporeDSTA555")
             print(social_media_links)
             for link in social_media_links:
                 self.__crawl_site(link, main_directory)
