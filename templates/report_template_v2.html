@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Social Media Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-top: 30px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .pass {
+            color: green;
+        }
+
+        .fail {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    {% for platform, platform_data in report_data.items() %}
+        <h1>{{ platform }} Report</h1>
+        {% for profile_url, profile_data in platform_data.items() %}
+            <h2>Profile:
+                <a href="{{ profile_url }}">{{ profile_url }}</a>
+            </h2>
+            <table>
+                <tr>
+                    <th>URL</th>
+                    <th>{{ platform }} Data</th>
+                    <th>Appropriate</th>
+                </tr>
+                {% for data in profile_data %}
+                    <tr>
+                        <td><a href="{{ data.url }}">{{ data.url | truncate_url }}</a></td>
+                        <td>{{ data.content }}</td>
+                        <td class="{{ 'fail' if data.profanity_probability >= 0.5 else 'pass' }}">
+                            {% if data.profanity_probability >= 0.5 %}
+                                Failed
+                            {% else %}
+                                Pass
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endfor %}
+    {% endfor %}
+    <h1>Broken Links</h1>
+    <table>
+        <tr>
+            <th>URL</th>
+        </tr>
+        {% for link in broken_links %}
+            <tr>
+                <td><a href="{{ link }}">{{ link }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <h1>Unchecked Links</h1>
+    <table>
+        <tr>
+            <th>URL</th>
+        </tr>
+        {% for link in unchecked_links %}
+            <tr>
+                <td><a href="{{ link }}">{{ link }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

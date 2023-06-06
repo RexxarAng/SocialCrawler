@@ -2,7 +2,7 @@ import csv
 import os
 import re
 from instaloader import instaloader
-from profanity_check import predict, predict_prob
+from profanity_check import predict_prob
 
 
 class InstagramCrawler:
@@ -18,7 +18,6 @@ class InstagramCrawler:
 
         if re.match(self.profile_regex, url):
             # Matched Instagram Profile URL
-            print(f'{url} is an Instagram profile URL.')
             profile_value = re.match(self.profile_regex, url).group(1)
             insta_profile = instaloader.Profile.from_username(self.instaloader.context, profile_value)
 
@@ -35,7 +34,7 @@ class InstagramCrawler:
                 os.remove(csv_file_path)
 
             # Prepare the CSV file and column names
-            fieldnames = ['Date', 'URL', 'Captions', 'Likes']
+            fieldnames = ['date', 'url', 'content']
 
             # Create the CSV file and write the header
             with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
@@ -45,16 +44,12 @@ class InstagramCrawler:
                 count = 0
                 data = []
                 for post in insta_profile.get_posts():
-                    # Access the properties and methods of the Post object
-                    print(f'Post caption: {post.caption}')
-                    print(f'Number of likes: {post.likes}')
 
                     # Extract relevant data from the node and organize it into a dictionary
                     record = {
-                        'Date': post.date,
-                        'URL': f"https://www.instagram.com/p/{post.shortcode}",
-                        'Captions': post.caption,
-                        'Likes': post.likes
+                        'date': post.date,
+                        'url': f"https://www.instagram.com/p/{post.shortcode}",
+                        'content': post.caption
                     }
 
                     # Append the record to the data list
@@ -81,9 +76,6 @@ class InstagramCrawler:
     def analyse_instagram_posts(self):
         for url, posts in self.data.items():
             for post in posts:
-                caption = post['Captions']
-                profanity_probability = predict_prob([caption])
-                print(f"URL: {url} Captions: {caption}")
-                print(f"Profanity Prediction: {profanity_probability}")
-                post['ProfanityProbability'] = profanity_probability
-
+                content = post['content']
+                profanity_probability = predict_prob([content])
+                post['profanity_probability'] = profanity_probability

@@ -1,5 +1,3 @@
-import json
-
 import jinja2
 import os
 from datetime import datetime
@@ -29,49 +27,13 @@ class SocialMediaReportGenerator:
         template_env = jinja2.Environment(loader=template_loader)
         # Register the custom filter
         template_env.filters["truncate_url"] = truncate_url
-        template = template_env.get_template("report_template.html")
+        template = template_env.get_template("report_template_v2.html")
 
-        # Prepare the data for the template
-        instagram_report_data = []
-        for url, posts in instagram_data.items():
-            for post in posts:
-                url = post['URL']
-                caption = post['Captions']
-                probability = post['ProfanityProbability']
-                instagram_report_data.append(
-                    {'platform': "Instagram", 'url': url, 'caption': caption, 'probability': probability})
-
-        facebook_report_data = []
-        # Iterate over each URL in the data
-        for url, url_data in facebook_data.items():
-            # Iterate over each post in the URL data
-            for post_id, post_data in url_data.items():
-                print(post_data)
-                # Check if the 'content' field exists in the post data
-                if 'content' in post_data:
-                    content = post_data['content']
-                    probability = post_data['ProfanityProbability']
-                    facebook_report_data.append(
-                        {'platform': "Facebook", 'url': post_data['post_url'], 'content': content, 'probability': probability})
-
-        # Prepare the data for the template
-        twitter_report_data = []
-        for url, tweets in twitter_data.items():
-            for tweet in tweets:
-                content = tweet['Content']
-                url = tweet['URL']
-                probability = tweet['ProfanityProbability']
-                twitter_report_data.append(
-                    {'platform': "Twitter", 'url': url, 'content': content, 'probability': probability})
-
-        # Render the template with the data
-        report_data = []
-        if facebook_report_data:
-            report_data.append(facebook_report_data)
-        if instagram_report_data:
-            report_data.append(instagram_report_data)
-        if twitter_report_data:
-            report_data.append(twitter_report_data)
+        report_data = {
+            "Instagram": instagram_data,
+            "Facebook": facebook_data,
+            "Twitter": twitter_data
+        }
         # Render the template with the data
         html_output = template.render(report_data=report_data, broken_links=broken_links, unchecked_links=unchecked_links)
 

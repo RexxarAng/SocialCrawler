@@ -42,33 +42,31 @@ class TwitterCrawler:
             os.remove(csv_file_path)
 
         # Prepare the CSV file and column names
-        fieldnames = ['Date', 'URL', 'Content']
+        fieldnames = ['date', 'url', 'content']
 
         # Create the CSV file and write the header
         with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
             csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             csv_writer.writeheader()
+
             # Using TwitterSearchScraper to scrape data and append tweets to list
             for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{username}').get_items()):
                 if i > num_tweets:
                     break
                 tweet = {
-                    "Date": tweet.date.isoformat(),
-                    "URL": tweet.url,
-                    "Content": tweet.rawContent
+                    "date": tweet.date.isoformat(),
+                    "url": tweet.url,
+                    "content": tweet.rawContent
                 }
                 tweets.append(tweet)
                 # Write the record to the CSV file
                 csv_writer.writerow(tweet)
         self.data[twitter_url] = tweets
-        print(tweets)
         return {"success": True, "data": tweets}
 
     def analyse_tweets(self):
         for url, tweets in self.data.items():
             for tweet in tweets:
-                content = tweet['Content']
+                content = tweet['content']
                 profanity_probability = predict_prob([content])
-                print(f"URL: {url} Content: {content}")
-                print(f"Profanity Prediction: {profanity_probability}")
-                tweet['ProfanityProbability'] = profanity_probability
+                tweet['profanity_probability'] = profanity_probability
