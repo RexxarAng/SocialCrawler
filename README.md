@@ -8,7 +8,6 @@
 ## Project Description
 The SocialCrawler is a web scraping and analysis tool designed to assess the authenticity of social media websites by analyzing the posts and content within user accounts. The project aims to provide a means to verify the legitimacy of social media platforms and detect potential fake or fraudulent accounts.
 
-
 ## Setup
 
 * Install Python3 from the official website: https://www.python.org/downloads/
@@ -16,6 +15,9 @@ The SocialCrawler is a web scraping and analysis tool designed to assess the aut
 * Extract the chromedriver executable from the downloaded archive.
 * Place the chromedriver executable in a directory that is included in the system's PATH environment variable.
 * Run this command ```pip install -r requirements.txt``` in the project directory
+* Update the config.json file
+  * browser profile with your facebook and instagram logged in
+  * Instagram username and password
 
 ## Technologies
 Project is created with:
