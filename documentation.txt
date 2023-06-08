@@ -1,0 +1,11 @@
+Facebook and Instagram
+- Requires login to crawl profiles
+
+Private Instagram Profile
+- Unable to extract posts, only posts that are public can be extracted
+
+Private Twitter Profile
+- Unable to extract tweets
+
+
+

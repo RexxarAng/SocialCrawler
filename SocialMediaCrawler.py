@@ -1,6 +1,8 @@
 import json
 import re
 import os
+from urllib.parse import urljoin, urlparse
+
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -45,24 +47,57 @@ class SocialMediaCrawler:
         chrome_options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=chrome_options)
 
-    def __get_social_media_links(self, url):
+    # def __get_social_media_links(self, url):
+    #     self.driver.get(url)
+    #     content = self.driver.page_source
+    #     soup = BeautifulSoup(content, 'html.parser')
+    #     links = set()
+    #     for a_tag in soup.find_all('a'):
+    #         href = a_tag.get('href')
+    #         if href is not None:
+    #             links.add(href)
+    #     filtered_links = {link for link in links if any(domain in link for domain in self.social_domains)}
+    #     print(f"Extracted from {url}: {filtered_links}")
+    #     return filtered_links
+
+    def __get_social_media_links(self, url, domain, depth=0, max_depth=5, visited_links=None):
+        if depth > max_depth:
+            return set()
+
+        if visited_links is None:
+            visited_links = set()
+
         self.driver.get(url)
         content = self.driver.page_source
         soup = BeautifulSoup(content, 'html.parser')
-        links = set()
+        social_media_links = set()
+        print(f"Visiting {url} (depth: {depth})")
+
         for a_tag in soup.find_all('a'):
             href = a_tag.get('href')
-            if href is not None:
-                links.add(href)
-        filtered_links = {link for link in links if any(domain in link for domain in self.social_domains)}
-        print(f"Extracted from {url}: {filtered_links}")
-        return filtered_links
+            if href is not None and not any(char in href for char in ['?', '#']):
+                parsed_url = urlparse(href)
+                if parsed_url.netloc == '':
+                    # Relative URL, construct absolute URL
+                    href = urljoin(url, href)
+                href_domain = urlparse(href).netloc
+                if domain in href_domain and href not in visited_links:
+                    print(f"Added to visited links: {href}")
+                    visited_links.add(href)
+                    social_media_links.update(
+                        self.__get_social_media_links(href, domain, depth + 1, max_depth, visited_links))
+                elif self.__is_social_media_link(href):
+                    social_media_links.add(href)
+        return social_media_links
+
+    def __is_social_media_link(self, url):
+        return any(domain in url for domain in self.social_domains)
 
     def __check_broken_link(self, url, error_message):
         self.driver.get(url)
         try:
             # Wait for the error message to appear in the page source
-            WebDriverWait(self.driver, 5).until(
+            WebDriverWait(self.driver, 10).until(
                 EC.text_to_be_present_in_element((By.TAG_NAME, 'body'), error_message)
             )
             return True
@@ -118,10 +153,16 @@ class SocialMediaCrawler:
             # Create the main directory with the main URL name inside the "data" directory
             main_directory = os.path.join(self.data_directory, url.split("//")[-1].replace("/", "-"))
             os.makedirs(main_directory, exist_ok=True)
-            social_media_links = self.__get_social_media_links(url)
+            parsed_url = urlparse(url)
+            domain = parsed_url.netloc
+            social_media_links = self.__get_social_media_links(url, domain)
             social_media_links.add("https://www.facebook.com/SingaporeDSTA555")
             social_media_links.add("https://www.instagram.com/SingaporeDSTA555")
+            social_media_links.add("https://www.instagram.com/rexxarang")
+
             social_media_links.add("https://www.twitter.com/SingaporeDSTA555")
+            social_media_links.add("https://www.twitter.com/rexxarang")
+
             for link in social_media_links:
                 self.__crawl_site(link, main_directory)
 
