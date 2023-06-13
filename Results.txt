@@ -1,0 +1,13 @@
+Facebook and Instagram
+- Requires login to crawl profiles
+
+Private Instagram Profile
+- Unable to extract posts, only posts that are public can be extracted
+
+Private Twitter Profile
+- Unable to extract tweets
+
+Crawling certain websites such as DSTA.gov.sg resulted in getting blocked by the server after crawling it once with a depth of 5, however it works fine
+with tech.gov.sg
+
+Crawling with instaloader multiple times will result in the instagram account being suspended and require user to verify the account again

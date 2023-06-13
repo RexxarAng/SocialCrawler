@@ -6,13 +6,14 @@ from profanity_check import predict_prob
 
 
 class InstagramCrawler:
-    def __init__(self, username, password):
+    def __init__(self, username, password, max_posts):
         self.instaloader = instaloader.Instaloader()
         self.instaloader.login(username, password)
+        self.max_posts = max_posts
         self.profile_regex = r'^https:\/\/www\.instagram\.com\/(?!(?:p|reel)\/)([A-Za-z0-9_]+).*'
         self.data = {}
 
-    def scrape_instagram(self, url, platform_directory, num_posts_to_retrieve=10):
+    def scrape_instagram(self, url, platform_directory):
 
         # Instagram Profile URL regex
 
@@ -34,7 +35,7 @@ class InstagramCrawler:
                 os.remove(csv_file_path)
 
             # Prepare the CSV file and column names
-            fieldnames = ['date', 'url', 'content']
+            fieldnames = ['date', 'url', 'content', 'profanity_probability']
 
             # Create the CSV file and write the header
             with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
@@ -49,7 +50,8 @@ class InstagramCrawler:
                     record = {
                         'date': post.date,
                         'url': f"https://www.instagram.com/p/{post.shortcode}",
-                        'content': post.caption
+                        'content': post.caption,
+                        'profanity_probability': predict_prob([post.caption])
                     }
 
                     # Append the record to the data list
@@ -62,7 +64,7 @@ class InstagramCrawler:
                     count += 1
 
                     # Break the loop if the desired number of posts is reached
-                    if count >= num_posts_to_retrieve:
+                    if count >= self.max_posts:
                         break
 
             # Store the data list as JSON in self.url_dict_json

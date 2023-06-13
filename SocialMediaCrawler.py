@@ -20,30 +20,35 @@ class SocialMediaCrawler:
         self.data_directory = os.path.join(os.getcwd(), "data")
         os.makedirs(self.data_directory, exist_ok=True)
 
-        self.social_domains = ['facebook.com', 'twitter.com', 'instagram.com']
         self.config_file = config_file
         self.__read_config()
 
         self.broken_links = set()
-        self.unchecked_links = []
+        self.unchecked_links = set()
+        self.data = {}
 
-        # need to specify a browser profile with facebook logged in (asia region requires login)
-        self.browser_profile = self.config_data['browser_profile']
-        self.facebook_crawler = FacebookCrawler(self.browser_profile)
+        self.facebook_crawler = FacebookCrawler(self.browser_profile, self.max_posts)
         # Change to your own username, password in the config.json file
-        self.instagram_crawler = InstagramCrawler(self.config_data['instagram_credentials']['username'],
-                                                  self.config_data['instagram_credentials']['password'])
-        self.twitter_crawler = TwitterCrawler()
+        self.instagram_crawler = InstagramCrawler(self.instagram_username,
+                                                  self.instagram_password,
+                                                  self.max_posts)
+        self.twitter_crawler = TwitterCrawler(self.max_posts)
 
         self.__start_driver()
 
     def __read_config(self):
         with open(self.config_file, 'r') as file:
             self.config_data = json.load(file)
+        self.social_domains = self.config_data['social_domains']
+        self.instagram_username = self.config_data['instagram_credentials']['username']
+        self.instagram_password = self.config_data['instagram_credentials']['password']
+        self.browser_profile = self.config_data['browser_profile']
+        self.max_depth = self.config_data['crawl_options']['depth']
+        self.max_posts = self.config_data['crawl_options']['max_posts']
 
     def __start_driver(self):
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--user-data-dir="+self.browser_profile)
+        chrome_options.add_argument("--user-data-dir=" + self.browser_profile)
         chrome_options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=chrome_options)
 
@@ -60,8 +65,8 @@ class SocialMediaCrawler:
     #     print(f"Extracted from {url}: {filtered_links}")
     #     return filtered_links
 
-    def __get_social_media_links(self, url, domain, depth=0, max_depth=5, visited_links=None):
-        if depth > max_depth:
+    def __get_social_media_links(self, url, domain, depth=0, visited_links=None):
+        if depth > self.max_depth:
             return set()
 
         if visited_links is None:
@@ -72,7 +77,7 @@ class SocialMediaCrawler:
         soup = BeautifulSoup(content, 'html.parser')
         social_media_links = set()
         print(f"Visiting {url} (depth: {depth})")
-
+        visited_links.add(url)
         for a_tag in soup.find_all('a'):
             href = a_tag.get('href')
             if href is not None and not any(char in href for char in ['?', '#']):
@@ -82,10 +87,9 @@ class SocialMediaCrawler:
                     href = urljoin(url, href)
                 href_domain = urlparse(href).netloc
                 if domain in href_domain and href not in visited_links:
-                    print(f"Added to visited links: {href}")
                     visited_links.add(href)
                     social_media_links.update(
-                        self.__get_social_media_links(href, domain, depth + 1, max_depth, visited_links))
+                        self.__get_social_media_links(href, domain, depth + 1, visited_links))
                 elif self.__is_social_media_link(href):
                     social_media_links.add(href)
         return social_media_links
@@ -111,19 +115,18 @@ class SocialMediaCrawler:
 
         if is_facebook_profile:
             error_message = "This content isn't available right now"
-            return self.__check_broken_link(url, error_message)
         elif is_instagram_profile:
             error_message = "Sorry, this page isn't available."
-            return self.__check_broken_link(url, error_message)
         elif is_twitter_profile:
             error_message = "This account doesn’t exist"
-            return self.__check_broken_link(url, error_message)
+        else:
+            return False
+        return self.__check_broken_link(url, error_message)
 
-        return False
-
-    def __crawl_site(self, url, main_directory):
+    def __crawl_site(self, main_url, url, main_directory):
         if self.__check_broken_link_platform(url):
             self.broken_links.add(url)
+            self.data.setdefault(main_url, {}).setdefault('Broken Links', set()).add(url)
             return
 
         platform_directory = os.path.join(main_directory, self.__get_platform_name(url))
@@ -131,16 +134,27 @@ class SocialMediaCrawler:
 
         if "facebook.com" in url:
             res = self.facebook_crawler.scrape_facebook(url, platform_directory)
+            if res["success"]:
+                self.data.setdefault(main_url, {}).setdefault('platform', {}).setdefault('Facebook', {})[url] = res[
+                    'data']
         elif "instagram.com" in url:
             res = self.instagram_crawler.scrape_instagram(url, platform_directory)
+            if res["success"]:
+                self.data.setdefault(main_url, {}).setdefault('platform', {}).setdefault('Instagram', {})[url] = res[
+                    'data']
         elif "twitter.com" in url:
             res = self.twitter_crawler.scrape_twitter(url, platform_directory)
+            if res["success"]:
+                self.data.setdefault(main_url, {}).setdefault('platform', {}).setdefault('Twitter', {})[url] = res[
+                    'data']
         else:
-            self.unchecked_links.append(url)
+            self.unchecked_links.add(url)
+            self.data.setdefault(main_url, {}).setdefault('Unchecked Links', set()).add(url)
             return
 
         if not res["success"]:
-            self.unchecked_links.append(url)
+            self.unchecked_links.add(url)
+            self.data.setdefault(main_url, {}).setdefault('Unchecked Links', set()).add(url)
 
     def __get_platform_name(self, url):
         for domain in self.social_domains:
@@ -149,14 +163,15 @@ class SocialMediaCrawler:
         return "Unknown"
 
     def crawl(self):
-        for url in self.config_data['urls']:
+        for main_url in self.config_data['urls']:
             # Create the main directory with the main URL name inside the "data" directory
-            main_directory = os.path.join(self.data_directory, url.split("//")[-1].replace("/", "-"))
+            main_directory = os.path.join(self.data_directory, main_url.split("//")[-1].replace("/", "-"))
             os.makedirs(main_directory, exist_ok=True)
-            parsed_url = urlparse(url)
+            parsed_url = urlparse(main_url)
             domain = parsed_url.netloc
-            social_media_links = self.__get_social_media_links(url, domain)
+            social_media_links = self.__get_social_media_links(main_url, domain)
             social_media_links.add("https://www.facebook.com/SingaporeDSTA555")
+            social_media_links.add("https://www.facebook.com/rexxarang")
             social_media_links.add("https://www.instagram.com/SingaporeDSTA555")
             social_media_links.add("https://www.instagram.com/rexxarang")
 
@@ -164,17 +179,17 @@ class SocialMediaCrawler:
             social_media_links.add("https://www.twitter.com/rexxarang")
 
             for link in social_media_links:
-                self.__crawl_site(link, main_directory)
-
+                self.__crawl_site(main_url, link, main_directory)
+        print(self.data)
         self.driver.quit()
         self.facebook_crawler.analyse_facebook_posts()
         self.instagram_crawler.analyse_instagram_posts()
         self.twitter_crawler.analyse_tweets()
 
         reportGenerator = SocialMediaReportGenerator()
-        reportGenerator.generate_html_report(self.instagram_crawler.data,
-                                             self.facebook_crawler.data,
-                                             self.twitter_crawler.data,
-                                             self.broken_links,
-                                             self.unchecked_links)
-
+        # reportGenerator.generate_html_report(self.instagram_crawler.data,
+        #                                      self.facebook_crawler.data,
+        #                                      self.twitter_crawler.data,
+        #                                      self.broken_links,
+        #                                      self.unchecked_links)
+        reportGenerator.generate_html_report(self.data)

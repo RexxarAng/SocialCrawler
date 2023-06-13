@@ -7,8 +7,9 @@ from profanity_check import predict_prob
 
 class TwitterCrawler:
 
-    def __init__(self):
+    def __init__(self, max_posts):
         self.data = {}
+        self.max_posts = max_posts
         self.profile_regex = r"(?:https?:\/\/)?(?:www\.)?twitter\.com\/([a-zA-Z0-9_]{1,15})"
 
     def __extract_twitter_username(self, url):
@@ -21,7 +22,7 @@ class TwitterCrawler:
         else:
             return None
 
-    def scrape_twitter(self, twitter_url, platform_directory, num_tweets=15):
+    def scrape_twitter(self, twitter_url, platform_directory):
         # Created a list to append all tweet attributes(data)
         tweets = []
 
@@ -42,7 +43,7 @@ class TwitterCrawler:
             os.remove(csv_file_path)
 
         # Prepare the CSV file and column names
-        fieldnames = ['date', 'url', 'content']
+        fieldnames = ['date', 'url', 'content', 'profanity_probability']
 
         # Create the CSV file and write the header
         with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
@@ -51,12 +52,13 @@ class TwitterCrawler:
 
             # Using TwitterSearchScraper to scrape data and append tweets to list
             for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{username}').get_items()):
-                if i > num_tweets:
+                if i > self.max_posts:
                     break
                 tweet = {
                     "date": tweet.date.isoformat(),
                     "url": tweet.url,
-                    "content": tweet.rawContent
+                    "content": tweet.rawContent,
+                    'profanity_probability': predict_prob([tweet.rawContent])
                 }
                 tweets.append(tweet)
                 # Write the record to the CSV file

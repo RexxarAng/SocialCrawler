@@ -7,12 +7,13 @@ from profanity_check import predict_prob
 
 
 class FacebookCrawler:
-    def __init__(self, browser_profile):
+    def __init__(self, browser_profile, max_posts):
         self.profile_regex = r'^https://www\.facebook\.com/(\w+)/?$'
         self.browser_profile = browser_profile
+        self.max_posts = max_posts
         self.data = {}
 
-    def scrape_facebook(self, facebook_url, platform_directory, num_posts_to_retrieve=10):
+    def scrape_facebook(self, facebook_url, platform_directory):
         match = re.match(self.profile_regex, facebook_url)
         if match:
             page_name = match.group(1)
@@ -29,35 +30,38 @@ class FacebookCrawler:
 
             if os.path.exists(csv_file_path):
                 os.remove(csv_file_path)
+            try:
+                scraper = Facebook_scraper(page_name, self.max_posts, "chrome", headless=True,
+                                           browser_profile=self.browser_profile)
+                json_data = scraper.scrap_to_json()
+                # Prepare the CSV file and column names
+                fieldnames = ['date', 'url', 'content', 'profanity_probability']
 
-            scraper = Facebook_scraper(page_name, num_posts_to_retrieve, "chrome", headless=True,
-                                       browser_profile=self.browser_profile)
-            json_data = scraper.scrap_to_json()
-            # Prepare the CSV file and column names
-            fieldnames = ['date', 'url', 'content']
+                # Create the CSV file and write the header
+                with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
+                    csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+                    csv_writer.writeheader()
 
-            # Create the CSV file and write the header
-            with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
-                csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-                csv_writer.writeheader()
+                    data = []
+                    json_data = json.loads(json_data)
+                    for post_id, post_data in json_data.items():
+                        # Extract relevant data and organize it into a dictionary
+                        record = {
+                            'date': post_data['posted_on'],
+                            'url': post_data['post_url'],
+                            'content': post_data['content'],
+                            'profanity_probability': predict_prob([post_data['content']])
+                        }
 
-                data = []
-                json_data = json.loads(json_data)
-                for post_id, post_data in json_data.items():
-                    # Extract relevant data and organize it into a dictionary
-                    record = {
-                        'date': post_data['posted_on'],
-                        'url': post_data['post_url'],
-                        'content': post_data['content']
-                    }
+                        data.append(record)
 
-                    data.append(record)
+                        # Write the record to the CSV file
+                        csv_writer.writerow(record)
 
-                    # Write the record to the CSV file
-                    csv_writer.writerow(record)
-
-            self.data[facebook_url] = data
-            return {"success": True, "data": json_data}
+                self.data[facebook_url] = data
+                return {"success": True, "data": data}
+            except SystemExit:
+                return {"success": False, "data": "No posts scraped"}
         else:
             return {"success": False, "data": "URL unsupported"}
 

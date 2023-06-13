@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Social Media Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-top: 30px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .pass {
+            color: green;
+        }
+
+        .fail {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    {% for main_url, data in report_data.items() %}
+        <h1>{{ main_url }}</h1>
+        {% for key, value in data.items() %}
+            {% if key == 'platform' %}
+                {% for platform, platform_data in value.items() %}
+                    <h2>{{ platform }}</h2>
+                    {% for profile_url, profile_data in platform_data.items() %}
+                        <h3>Profile:
+                            <a href="{{ profile_url }}">{{ profile_url }}</a>
+                        </h3>
+                        <table>
+                            <tr>
+                                <th>URL</th>
+                                <th>{{ platform }} Data</th>
+                                <th>Appropriate</th>
+                            </tr>
+                            {% for data in profile_data %}
+                                <tr>
+                                    <td><a href="{{ data.url }}">{{ data.url | truncate_url }}</a></td>
+                                    <td>{{ data.content }}</td>
+                                    <td class="{{ 'fail' if data.profanity_probability >= 0.5 else 'pass' }}">
+                                        {% if data.profanity_probability >= 0.5 %}
+                                            Failed
+                                        {% else %}
+                                            Pass
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% endfor %}
+                {% endfor %}
+            {% else %}
+                <h2>{{ key }}</h2>
+                <table>
+                    <tr>
+                        <th>URL</th>
+                    </tr>
+                    {% for link in value %}
+                        <tr>
+                            <td><a href="{{ link }}">{{ link }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>

@@ -7,5 +7,14 @@
   "urls": [
     "https://www.dsta.gov.sg/home",
     "https://www.tech.gov.sg/"
-  ]
+  ],
+  "social_domains": [
+    "facebook.com",
+    "instagram.com",
+    "twitter.com"
+  ],
+  "crawl_options": {
+    "max_posts": 10,
+    "depth": 5
+  }
 }
