@@ -49,6 +49,7 @@ class SocialMediaReportGenerator:
 
             # Print the file location
             print(f"HTML report saved at: {abs_path}")
+
     # def generate_html_report(self, instagram_data, facebook_data, twitter_data, broken_links, unchecked_links):
     #     # Get the absolute path of the script
     #     script_path = os.path.abspath(__file__)

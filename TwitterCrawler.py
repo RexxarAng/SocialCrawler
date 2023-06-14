@@ -63,6 +63,9 @@ class TwitterCrawler:
                 tweets.append(tweet)
                 # Write the record to the CSV file
                 csv_writer.writerow(tweet)
+        if not tweets:
+            return {"success": False, "data": "No posts retrieved"}
+
         self.data[twitter_url] = tweets
         return {"success": True, "data": tweets}
 

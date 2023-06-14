@@ -61,7 +61,7 @@ class FacebookCrawler:
                 self.data[facebook_url] = data
                 return {"success": True, "data": data}
             except SystemExit:
-                return {"success": False, "data": "No posts scraped"}
+                return {"success": False, "data": "No posts retrieved"}
         else:
             return {"success": False, "data": "URL unsupported"}
 

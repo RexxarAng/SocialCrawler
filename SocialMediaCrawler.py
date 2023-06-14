@@ -5,6 +5,7 @@ from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -150,11 +151,45 @@ class SocialMediaCrawler:
         else:
             self.unchecked_links.add(url)
             self.data.setdefault(main_url, {}).setdefault('Unchecked Links', set()).add(url)
-            return
 
         if not res["success"]:
-            self.unchecked_links.add(url)
-            self.data.setdefault(main_url, {}).setdefault('Unchecked Links', set()).add(url)
+            if res["data"] == "No posts retrieved":
+                self.data.setdefault(main_url, {}).setdefault('Unchecked Profile Links', set()).add(url)
+            else:
+                self.unchecked_links.add(url)
+                self.data.setdefault(main_url, {}).setdefault('Unchecked Links', set()).add(url)
+
+    def sort_data(self):
+        for main_url in self.data:
+            data = self.data[main_url]
+
+            # Add the keys with values in the desired order
+            ordered_data = {}
+            if data.get('Broken Links'):
+                ordered_data['Broken Links'] = data['Broken Links']
+            if data.get('Unchecked Profile Links'):
+                ordered_data['Unchecked Profile links'] = data['Unchecked Profile Links']
+            if data.get('Unchecked Links'):
+                ordered_data['Unchecked Links'] = data['Unchecked Links']
+
+            # Sort the platforms keys within the 'platform' dictionary
+            platform_data = data.setdefault('platform', {})
+            sorted_platform_data = {
+                'Facebook': platform_data.pop('Facebook', {}),
+                'Instagram': platform_data.pop('Instagram', {}),
+                'Twitter': platform_data.pop('Twitter', {}),
+            }
+            platform_data.update(sorted_platform_data)
+            ordered_data['platform'] = {}
+            # Include specific platforms in the desired order
+            if platform_data.get('Facebook'):
+                ordered_data['platform']['Facebook'] = platform_data['Facebook']
+            if platform_data.get('Instagram'):
+                ordered_data['platform']['Instagram'] = platform_data['Instagram']
+            if platform_data.get('Twitter'):
+                ordered_data['platform']['Twitter'] = platform_data['Twitter']
+
+            self.data[main_url] = ordered_data  # Update self.data with the desired order
 
     def __get_platform_name(self, url):
         for domain in self.social_domains:
@@ -192,4 +227,5 @@ class SocialMediaCrawler:
         #                                      self.twitter_crawler.data,
         #                                      self.broken_links,
         #                                      self.unchecked_links)
+        self.sort_data()
         reportGenerator.generate_html_report(self.data)

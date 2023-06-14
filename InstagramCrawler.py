@@ -66,7 +66,8 @@ class InstagramCrawler:
                     # Break the loop if the desired number of posts is reached
                     if count >= self.max_posts:
                         break
-
+            if not data:
+                return {"success": False, "data": "No posts retrieved"}
             # Store the data list as JSON in self.url_dict_json
             self.data[url] = data
 
