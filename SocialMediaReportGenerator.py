@@ -28,7 +28,7 @@ class SocialMediaReportGenerator:
         template_env = jinja2.Environment(loader=template_loader)
         # Register the custom filter
         template_env.filters["truncate_url"] = truncate_url
-        template = template_env.get_template("report_template_v4.html")
+        template = template_env.get_template("report_template_v5.html")
 
         # Render the template with the data
         html_output = template.render(report_data=data)

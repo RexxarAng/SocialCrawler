@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Social Media Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+        font-size: 24px;
+        margin-top: 30px;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .pass {
+        color: green;
+    }
+
+    .fail {
+        color: red;
+    }
+
+    .section {
+        background-color: #e6f3f8;
+        padding: 10px;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+
+    .section-content {
+        padding: 10px;
+        background-color: #fff;
+        display: none;
+    }
+
+    .section-content.show {
+        display: block;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Social Media Report</h1>
+            </div>
+        </div>
+
+        
+            <div class="row mt-4">
+                <div class="col section" onclick="toggleSection('https://www-dsta-gov-sg/home')">
+                    <h2>https://www.dsta.gov.sg/home</h2>
+                </div>
+            </div>
+
+            <div id="https://www-dsta-gov-sg/home" class="section-content">
+                
+                    
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Broken Links</h3>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/rexxarang">https://www.facebook.com/rexxarang</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/rexxarang">https://www.instagram.com/rexxarang</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/singaporedsta/channel">https://www.instagram.com/singaporedsta/channel</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.twitter.com/SingaporeDSTA555">https://www.twitter.com/SingaporeDSTA555</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/SingaporeDSTA555">https://www.facebook.com/SingaporeDSTA555</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/SingaporeDSTA555">https://www.instagram.com/SingaporeDSTA555</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/singaporedsta">https://www.instagram.com/singaporedsta</a></td>
+                                            </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Unchecked Profile Links</h3>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.twitter.com/rexxarang">https://www.twitter.com/rexxarang</a></td>
+                                            </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Unchecked Links</h3>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/317322480578949/posts/580843820893479">https://www.facebook.com/317322480578949/posts/580843820893479</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/317322480578949/posts/582472334063961">https://www.facebook.com/317322480578949/posts/582472334063961</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/317322480578949/posts/583024580675403">https://www.facebook.com/317322480578949/posts/583024580675403</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/317322480578949/posts/577854277859100">https://www.facebook.com/317322480578949/posts/577854277859100</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/317322480578949/posts/581449157499612">https://www.facebook.com/317322480578949/posts/581449157499612</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/317322480578949/posts/578908017753726">https://www.facebook.com/317322480578949/posts/578908017753726</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/reel/CtkqWjILtot/">https://www.instagram.com/reel/CtkqWjILtot/</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/reel/CtnRHTZO456/">https://www.instagram.com/reel/CtnRHTZO456/</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/317322480578949/posts/580311324280062">https://www.facebook.com/317322480578949/posts/580311324280062</a></td>
+                                            </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                
+                    
+                        
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <h3>Facebook</h3>
+                                </div>
+                            </div>
+
+                            
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <h4>Profile: <a href="https://www.facebook.com/SingaporeDSTA">https://www.facebook.com/SingaporeDSTA</a></h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>URL</th>
+                                                    <th>Facebook Data</th>
+                                                    <th>Appropriate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid02KgkeKEKTtVMxESgSe4rE6FK5JftmSKarJrWKXE84kuiANPax7WE5ibZfxHZviLEMl?__cft__[0]=AZXlt2NFEp7mYi_zThKUxM4AicmGtVPb-64tH2EigdJlevDAQz804JlR3hRv_Gtbzyue4kj9I0xOQbWA4crGhzTIrCwMLCKgWPlNjEonuaT_jkrU_b6_T1qYHKDZF6-qRzpEew8KHCW_0FArE5A0ozamWo4gBU1CWJEXmlDm3NdYnAkIj318PXC_pfFeAD9gLQc&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Great dads don't find faults. They find solutions. Happy Father's Day to all daddies!#DSTA #defencescienceandtechnologyageny #fathersday</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid0cQ6wZLFDXgrX2BwFKamFNTing5V3fcdLeCUvgwpWi5qphFCQLmvBEPtmjM8mGoQ9l?__cft__[0]=AZVGQUb1bVgHOCyYgGKQY-mjIvlnq29XA6l80H2KQLxWaxLR3slDiSkmXhuTmTU7sw5pYyf1sWV3_76rzN4wXTGXmK5lCyGIVMskUVR2FznjxY5N6-5sf0kxR18RNKGvqctYxCnJKZ8r3ErrVWT9W7cfyy9zmqfdpXc4NRweE-6Foy9aUYLUsDC1CtYQ4gCSSGs&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Attention space cadets!  Blast into space with Dr Soichi Noguchi as he shares his experiences at #BrainHack!#BrainHack2023 #DSTA#STEMsg #StrategyInAction #Space #SpaceFaculty</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid0fDhYzvqcE623e9NPzUVEomdeEryE1pDyds2uzNXAYNL8fQmP16rkDNrSQV5nz49Ll?__cft__[0]=AZU2O_mGAjU9KZP6tb7qthg3oN-YUe6VUaFHmd3t34uci6or5rCA4NGSU1ZpvLxdGUFph6nsMBCKI12TvbQ1uNVdHv8FF6ifBzqm1dYGTK--FlfEIoZ1l_cGrLWFBiT8dj9KPlJgQQyc4S8PfjS9kbEvumYcWY4KOd-nICGOTaVKHLa6ZsW7i8Z0JcYr9eJJkno&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Be it in office or at army exercises — our people bring their A game and their best smiles! #DSTA #defencescienceandtechnologyagency #StrategyInAction #tech #techlife #collaboration</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid02CQYexUseyDac53tPyy2vgCfnhYD2n6zYS8onkRyLKcP8fuu7UbXMymJSCYjjezZPl?__cft__[0]=AZV2IOWr-bvnBlBPI5PJjo4f2P7cKwLS04-pGcepX_g4QnYkzWdhlbeYxSJeAKwOVQyOeietV6X3avzznSCtSqaLMbUazEJKpN8l-7bL6qVMwSJkYxDfhwio8RSiD9SkXRDQQ6eUvM2tv1IfFOsDfCZUtsyaoFZ5M60csMyj7cPlxATJyyEnwf0Gyw3JcClMXAs&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Let the countdown begin!  In seven days, BrainHackers will assemble for their final mission! #BrainHack #BrainHack2023 #DSTA #STEMsg #StrategyInAction</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid05KhXkW6miZj3y1S1FxY98WgXLFDUePoEwNCz5jiEQwSUD1nLKbAt7VWZntwzUhY3l?__cft__[0]=AZX7LGYyt832Z31sT0jdv3v5oMEqc5sTXipkN_ovSywNASpMtLBVS3yIkpiOHToKYu-k5j9Dcrq4Uq-hi_jJK8MaLUjr4NBL4f2SI8loY13zWJkrNZZSJxupWPkhoQ2zskcSC7F0bf0__5DdhHfztyEifiyRWW6plmADjoIjOvGV3QTPEm3lxylAoGhiGw8FTbo&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Our intern Wing Ho doesn't wing it, he wins it. https://go.gov.sg/wingho#DSTA #defencescienceandtechnology #Internship #Education #STEMsg</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid0tJP9LrywcJg4tQ38yQKkWi4yWrA2qtgYRMmWRt51hZ52SnqQxAFYd86kWLXMPETKl?__cft__[0]=AZVIY8ZSL9X7li3lBU17UR9s-jVba7reEtIGvt_SQAI8VG7N-unhXwKPMy5HyllXPqN7B0vrTIcBpRHqwPS-8f1RekdNk2IyzYENmgOsKRTmE6UZwlBlT0G7IxWg4Jf8qvUJMSe415evvBd0s4sLVtX7Kq69r5UQbfLxPkOxgpAaedVJ7OnrMdntbyT0nekO5O4&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Get to know Yi Zhen, a data scientist and pianist  Striving for excellence is her guiding key when it comes to working with data and playing a melody.Get in tune with fellow BrainHackers and take your skills to new heights!#BrainHack #BrainHack2023 #DSTA#STEMsg #StrategylnAction</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid06znd4g4R36G47iUu29JrVXCxUansFAASVP3xd8FYQ9cvURGUc63cL55dUiDeUaykl?__cft__[0]=AZVg_h1bivp8YMmfvamJ1G_PerrJCeRb9p-ZcMtsWVW0ji22Q-TwB3jQjjlNkJCFWxqn2m5QIp_M767t6iqxKo3CencWlUHhqW4ka9m2JHZHwp5yMmj0M_VKxj3eGPoOcrcH8coJfqfr7f7Ro-9s_ICK5nKngEdWS62KDRHhFAZ2NoFjyIru61YI_Pai9Wh7gZo&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Check out The Singapore Army’s new Chemical, Biological, Radiological and Explosive Remotely Operated Vehicle (CBRE ROV)! Our engineers integrated the ROV with advanced equipment, allowing it to serve as a multi-functional robotics platform for missions that extend beyond explosive ordnance disposals. #DSTA #DefenceScienceAndTechnologyAgency #StrategyInAction #collaboration #engineering #Technology #TechLife #DesignDevelopDefend</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid02s6pD2YKLodYDXjsxG4WD7QjHqgVvUr5VDtwCptLy3FZ8XqyetLCD4Vo5qou9jQDSl?__cft__[0]=AZVD1SgfW9BClVYamYO1Lc7h7gmjgid_1sIGJkQIRboQYjMVwbIBM1zsbX4ATk-2m-XujtAzCZsZyjJ4FPokZtWUQGeXKBkO54UVt7TTf6nrFIs9byc61oB2TZhPWhK2v-xFUehjDlNCOiTXHFMYAwsEB7T8oQPmO7aS9uW4eovzT2JPbJgxR0VA4fSYD6tuHRk&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Attention XR warriors, here's a hint to help you unlock an alternate reality!#BrainHack #BrainHack2023 #DSTA#STEMsg #StrategylnAction #XR #ARVR</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid034Z2jFAcd9dHmpeCiNzXhD22PEWY8XCF7sz3MZY2RBWQgVJ7qsU1AjgGUto22atkPl?__cft__[0]=AZUIBZBh8lYLZmxzA72rYkz2vJAFaNC_nGve_SQl8apm1RfpvaqNbUYo0zaymbpRKt-ZzeYwBmjTwma9eT0bIKu5gkaqPQDmb6a0e8PWA-D5GDsztZuKDySabD3v1YpquLsrsE2KVS2YcmllDvZOK62vBP_GndEL6e-g24MT0AJZ_PRwT4NXl0aqFrfMGDaxe0EBTlOmQBbdUD5p36Bb9kNQ&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Ready, set, sail! We take on Mothership in Admiral’s Battlegrounds, a game designed by DSTA to level up Republic of Singapore Navy’s naval warfare training.So, who wins? #DSTA #DefenceScienceAndTechnologyAgency #StrategyInAction #TechLife</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/SingaporeDSTA/posts/pfbid02WfmxDPgs4z6mc5kz2QBBqvrxTs7fDz7Rof4UG4KhoJjc5BDc2d9kwgZWU5yRSKXpl?__cft__[0]=AZVmRWppd-waEewh1tgNpNbnGAMOhYcHfzPaKIaObek8DRKV9X8ZCj4UmDFuxvI3W11f7nDAlB9Xiy66FFkPeNhQmejVaoXD0d3WwZJdTPorD3GuBCowC2OY6uh6Eq_uZARGO8K8OmztimHDL1BS5ZIIrH5N4h0H6EEYs0MQNBucudh0zHeM8dsrUbdRh0huDS4&__tn__=%2CO%2CP-R">https://www.facebook.com/Singa...</a></td>
+                                                        <td>Looking for places near DSTA to go with your lunch kakis? Join our teammate – the friendly foodie Cheryl for a mouth-watering adventure! #SgFoodie #DSTA #DefenceScienceandTechnlogyAgency #TechLife #StrategyInAction</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            
+                        
+                    
+                
+            </div>
+
+        
+            <div class="row mt-4">
+                <div class="col section" onclick="toggleSection('https://www-tech-gov-sg/')">
+                    <h2>https://www.tech.gov.sg/</h2>
+                </div>
+            </div>
+
+            <div id="https://www-tech-gov-sg/" class="section-content">
+                
+                    
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Broken Links</h3>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/rexxarang">https://www.facebook.com/rexxarang</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/rexxarang">https://www.instagram.com/rexxarang</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.twitter.com/SingaporeDSTA555">https://www.twitter.com/SingaporeDSTA555</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.facebook.com/SingaporeDSTA555">https://www.facebook.com/SingaporeDSTA555</a></td>
+                                            </tr>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.instagram.com/SingaporeDSTA555">https://www.instagram.com/SingaporeDSTA555</a></td>
+                                            </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                
+                    
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>Unchecked Profile Links</h3>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>URL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                            <tr>
+                                                <td><a href="https://www.twitter.com/rexxarang">https://www.twitter.com/rexxarang</a></td>
+                                            </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    
+                
+                    
+                        
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <h3>Facebook</h3>
+                                </div>
+                            </div>
+
+                            
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <h4>Profile: <a href="https://www.facebook.com/GovTechSG">https://www.facebook.com/GovTechSG</a></h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>URL</th>
+                                                    <th>Facebook Data</th>
+                                                    <th>Appropriate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/events/266663762610259/?__cft__[0]=AZUsDet4bBur3boHHqIINA-7Vjk6WoZhBIf3vuSkSC8NuGqyKh3bjX-N45eJaUAg9KUHbQnSa71EXbw9L77SJ8xkakOvRIa2yb3xACta3dqGtyF8jtorXK_dHGLUgeSoGAb7Fq-9LWo4tpKS1geZKCuSuHPwrcPXKIsjlKmLhHkyJKfGtLHXtIezHaBqo7B40rw&__tn__=%2CO%2CP-R">https://www.facebook.com/event...</a></td>
+                                                        <td></td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid0NPube6HKF1MYfysdGpxqQAsBLDwL7wykdtFou49eHR6RS3RdWdpqCnb7wpDZqFRpl?__cft__[0]=AZUwbNuEoVd8aDu1FQ1Ex5FXpCO5vpGhrPVLciZ48pbtQdVNhO5DPPix6-W9bXTGeQxDnOz_s7FOvVbizxCXevvoHOrkOCAKmt4RZ4qVjJ5hblQp1wa9PuMyo_1ujMl5ur8FvC47sod7VgRbVwRQ_dBH0mFbjZSmuw4rFHFnIfz_PCp8ky38uioyck8p7pn-pxI&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td> Want to keep up with the latest and hottest Artificial Intelligence (AI) trends?We’ll bring you up to speed on the five most common AI terms in our latest Tech News article.Read about them in detail: https://go.gov.sg/fb-technews-0064#TechTerms #TechNews #MachineLearning #DeepLearning #GenerativeAI #NLP #GovTechVICA #ArtificialIntelligence #AI #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid02wvW4PaCAMtxHocnFVH9bnB2hGfCSRBpkEXAGyBKNxM4X9vixRMSDwaYyWsjYoFH6l?__cft__[0]=AZUjJmsg4WAFpf-0Jnkp_otOlMA4KM1Hiug-Ihoni1rx0cPmzVY9uGdp0up0EUlWRytbL42h_7V9fQFrWeGBE1mZivSdFCW45uhNSOu0igLiXBG8ATTqwRRKoz-QBxjDmutgpkeqi2HkZLmkiGT6kr0_arBfscUUzeWWsUCevDaqfrRXA2FLV3yOj6dJvOh8VQ0&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td>Don’t say bojio! If your dad wants his opinions to be heard, have him sign up for CrowdTaskSG this Father’s Day, AND redeem a free Toast Box Singapore small hot coffee or tea on us! CrowdTaskSG lets citizens complete simple tasks and share their views with government agencies while earning rewards. Users receive virtual coins with each completed task, which can be redeemed for cash rewards at participating merchants that support NETS QR code payment.For a limited time from 15 June, eligible new sign-ups will receive a pop-up notification in their CrowdTaskSG account. Terms and conditions apply. While stocks last. Sign up now at go.gov.sg/ctsg-fb  Win-win for everyone! Let us know with emojis, which drink he would most probably be redeeming.   #FathersDay #BeHeardEffectChange #SmartNationSG #TechForPublicGood #CrowdTaskSG #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid0iEevFbvZUQjkfRxzevpbDUeTMDsJNfXxTKmUkgum8FzUhc9QRnVrB4EAno1D1nMwl?__cft__[0]=AZVF8GveAld8gEySstiU7oNK71GNQCkXQyuUHn_glSGzyGT5heu2fFq5lmZW8C08JUu51L_c1Se5h47lb56vtANIpuYp2nvsYyAR4Jrox5M1UhSfPVYO5Itvm4JTgKUHDSOaQ8U-eYWEovWzt-PTPZ0QXycgx2jn0iedQY0pD6T9Xjd_uDlJjHgR3doCQz7jxhM&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td>Happy Father’s Day!  Does your dad fit any of these stereotypes? Regardless of their distinct traits that set them apart, we're sure their love for their children is all the same! Navigating fatherhood can be a challenging journey. Check out our latest TechNews article with 5 valuable resources that will lend dads in Singapore a helping hand: https://go.gov.sg/fb-technews-0063#TechNews #Singapore #HealthHub #LifeSG #NParkBuzz #ActiveSG #MyTransport #DadLife #DadsOfSG #FathersDay #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid07Qp9HG6qH8N7V9CNnCX3Mqky1FBTzjXNLMeSziWNowbHoydE4gaqAff5XcYmXDdol?__cft__[0]=AZUme9adE9P7hVgMYFak_4YzWZCWaYbldO-ayq4hRT09QUf5-6hGwP-wG6ln2Y-mdRNRLmSpWtyOgwtIBkcVH5XPketjUOM0uZmzM3swbaPQIXZef22VVoviOM7CmLV-7Gdyn4-EAyw9iCpCr9zoOi1Fyq0ChmSyM5l9Ss5cDT5ev4iu-hVM6S3fOGg9cKH1f44&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td>Coffee? Tea? Free when you sign up with CrowdTaskSG? Sign me up! For a limited time from 15 June, redeem a free Toast Box Singapore small hot kopi or teh when you sign up for CrowdTaskSG. While stocks last, so hurry, share this with your friends and family! Sign up today at https://go.gov.sg/ctsg-fb   #ToastBoxSG #BeHeardEffectChange #SmartNationSG #TechForPublicGood #CrowdTaskSG #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid02b9hKHjxUb3GdJv2jBk8R9koeVcVXmrgMKf7CvaouaSus3Xz5YAkqBSQEDUBPrKv6l?__cft__[0]=AZV1DXLp2O0e-zakwWU0NYR0CNtHCzOw65KHlautsd1APH7G5Zv6y3o6pxzc_TAD-i9QVc_dCYkweOvR6OHjzVsdqbmh1lnZTcsWoIRSCmHedh-QwurpVYs8FFLz4XjRVqX-LPoLQM596hNSCuHbu8jD90q8NVEK1dITGwM5uzTVlo56vqXsxpklMqqMae9_rS0&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td>Father’s Day is just around the corner! The journey of fatherhood may seem daunting and full of challenges, but here are 5 apps that can give dads in Singapore support! Check out these valuable resources in our latest TechNews article at https://go.gov.sg/fb-technews-0063What are some apps your dad can't live without? #TechNews #Singapore #HealthHub #LifeSG #NParkBuzz #ActiveSG #MyTransport #DadLife #DadsOfSG #FathersDay #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid0NZxLrjiaetaVsZChSRepmASLG7G9npRP2RDA5YTjUsfppzM2T69C7RSwauQBSyuJl?__cft__[0]=AZUVdruoxgACVh-7V6KGv-qoikl9006ypwhdvrlVmpP5S_mu9JeY_RAL9uAVoQxrwMmK-NfnMti4ATkPFR4-9LJ0TqCCIYvqsFF8_d77n2XDV5lPctag1SGmSqTYEyC0oCO8QRnzJysCbK3NW7YNuSt2Swu-fMQ8J5nQDjWUX_fS95--_K5gMJFsFcNraSzucHI&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td>[#Contest Alert!] Stand to win $20 Grab vouchers in the month of June!Continuing from May where we gave away Capitaland vouchers, we have a new prize in June - 10 sets of S$20 Grab vouchers are up for grabs!Simply report a valid neighbourhood issue via OneService on the LifeSG app or website for the first time, and you might be one of 10 lucky winners! Try it out today  https://go.gov.sg/oslife-fbThank you for helping to keep our neighbourhoods clean and well-maintained!T&Cs apply: https://go.gov.sg/oslifecontest-terms#OneService #LoveOurHood #LifeSG #SimplerServicesBetterLives #NeighbourhoodHero #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid0jqvKAgU6JR9f71wzzj193DCeScYJ7LUANa3Y8mZBqLZZQJ2s6txmfi3NUUrUNp75l?__cft__[0]=AZV4e93qIZhqM0_Vh3ThGMJ_i7UnR41IdZLXayBiqvvS-VFhXq_Bt0nNN2eOv6Z2_UYuTNUUJVubumr7WjUjCtNKumK0kVp34OtlGMlzXUeuY3xtKsNzYalcMqI9ymyRhKMIXqtyVIZQX7Sv0Kri6_4aYqb5fWFGeKEHlXZ9yUE_cyw1DIgk_RMheoRXNwKb5pM&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td>Looking for things to do this June holidays? Join us at the Smart Nation PlayScape exhibition located at Science Centre Singapore. Come experience and learn about digital technologies powering our world! Tickets start at $4 and admission is free for Singaporeans and Permanent Residents during off-peak periods. Science Centre Singapore is open daily this June holidays. Check out their website for more ticketing information.For more information on the exhibition, check out: www.go.gov.sg/playscapeSmart Nation Singapore #AR #AI #SmartNationSG #PlayScape #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid0v3WdFmWM7unMaDW5f1tRw5xjdDEB4gWtjaHNuCFQB8GeSmKXWiHs8VpwRkGEmPxLl?__cft__[0]=AZV9pLpZ44xwXfH3aGLoL-WgHrP_DaC1nGhHMdkb4HSCzq8mvlZFbPyPvQhfH_XD8FqBxG4zuC75CFmxZ0rdHW71vTlH3Fpfy0HhbovfeMR79J_KekqzelS9RDlbTC4hJvWl_FeRJuCzpUpPvD4GmerFi1fERIDVY8Gbhx0io2020YbDUZoomWhqoAjCJrknZKU&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td>When was the last time you forgot your passwords?  Creating unique passwords for different accounts is hard enough. Having to remember them all is worse.  Here's a tip -- consider using passphrases instead! They are more secure and way easier to recall.  Swipe to find out what passphrases are and learn how to create good ones! To learn more, check out: go.gov.sg/fb-technews-0060    #TechNews #Passwords #Passphrases #Security #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://www.facebook.com/GovTechSG/posts/pfbid0NPabVV1zTYRtSFMao1AYQarG935bHi2SyWSBgkVe4x9CxLJHhPgM26Ros6v7HS7Hl?__cft__[0]=AZVr5cs9awnXjAdkua_1haorerz4otVe6jlH4pUxY8E7kXxJeYPUCvRUu2G_1yJNCFQcPs2mNKPQzVja6ofIKbZyj_V8y9VgD7WbOSKBIhJIfth11-bf9IxxwT8XaqDLA9Mr3t7WgmaE-TSXnQISHlwN4s-Dd9aCeLvObpymLLnSapx8uGojRRqarVooYdrrOxQ&__tn__=%2CO%2CP-R">https://www.facebook.com/GovTe...</a></td>
+                                                        <td> Here’s what went down at our recent Smart Nation & Digital Government Industry Briefing 2023! It was a jam-packed day as we shared about the government's digitalisation journey thus far and working collectively as one community. We also touched on upcoming initiatives this year that are related to the SG Tech Stack, Smart City operations and Sustainability goals.Continue with us on our journey to deliver more people-centric, trusted, and sustainable digital products and services for a better Singapore!Catch the event recording here: go.gov.sg/ib2023-recording #SmartNationIB #ICT #SustainabiltyTech #TechForPublicGood #GovTechSG</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            
+                        
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <h3>Twitter</h3>
+                                </div>
+                            </div>
+
+                            
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <h4>Profile: <a href="https://www.twitter.com/GovTechSG">https://www.twitter.com/GovTechSG</a></h4>
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>URL</th>
+                                                    <th>Twitter Data</th>
+                                                    <th>Appropriate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1670647753649840128">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>It's not too late to join the #AI wave! If you're curious about Artificial Intelligence but not sure where to start, this article might be a step in the right direction!
+
+#MachineLearning #DeepLearning #NLP</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1669634286717382656">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>Simple things to make your dad happy this #FathersDay! 
+
+Help him sign up for #CrowdTaskSG to redeem a free ToastBox coffee or tea WHILE contributing to nation-building efforts by sharing his opinions with #Singapore government agencies.   
+
+Sign up at https://t.co/zdUsboCCEZ https://t.co/zb0ucwpXXy</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1669591158153158656">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>Happy Father’s Day to all fathers! 🎉
+
+No matter which type of father you may be, take some time off to celebrate today!
+
+#FathersDay #GovTechSG https://t.co/WhBIEICjrX</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1669170373907324928">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>Hey #Singapore! For a limited time only, sign up for #CrowdTaskSG and redeem a FREE ToastBox small hot kopi or teh on us! While stocks last.
+
+Find out more at https://t.co/zdUsboCCEZ  
+
+#BeHeardEffectChange #SmartNationSG #TechForPublicGood #GovTechSG https://t.co/BHD50CLEL7</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1668910136746975233">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>Father's Day is round the corner!
+
+As we celebrate this occasion, here are some apps to support all dads on their fatherhood journey. #FathersDay</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1668863657865015296">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>🎫Win Grab vouchers!🎫
+
+For the month of June, submit a valid neighbourhood issue to #OneService via the #LifeSG app and you might be one of 10 lucky winners to win a $20 Grab voucher! Try it out today ➡️ https://t.co/rsXT04qH7x
+
+T&amp;Cs: https://t.co/Wpkdz86RRr. https://t.co/jvuP2RUGJA</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1668531311513042947">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>#APEXCloud is a centralised #API management tool that allows end-to-end management, complies with Government ICT&amp;SS requirements and is accessible on the internet and intranet. 
+
+#SGGovDevPortal #APIExchange #Cloud</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1668110576768397312">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>#HotJobsOfTheMonth - Keen to advance your skills to the next level? Learning never stops at GovTech! Join us to uncover your true potential.
+
+Check out this month’s openings via https://t.co/yeml3OrB5R.
+
+More jobs at: https://t.co/nbiHMYyy08
+
+#DataEngineer #InfrastructureEngineer https://t.co/DulpiiZ1fv</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1667025867183390722">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>If you’ve ever found it a hassle to create and remember unique #Passwords for different accounts, try using #Passphrases instead! Not only are they easier to remember, they're also more secure.
+Learn more about passphrases: https://t.co/OwLNP9GHwT 
+
+#TechNews #Security https://t.co/WQsIpCPCwO</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1666731825472094208">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>Here’s a glance at what went down at the recent #SmartNationIB!
+
+GovTech leaders and industry partners shared about SG’s #digitalisation journey thus far and plans for this financial year at the event. 
+
+Full recap at https://t.co/7dny5dkasC #ICT #SustainabiltyTech https://t.co/3jwtxc180b</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                                    <tr>
+                                                        <td><a href="https://twitter.com/GovTechSG/status/1666690589960847361">https://twitter.com/GovTechSG/...</a></td>
+                                                        <td>Look forward to innovative tech solutions to support public safety and security in SG.
+
+This innovation centre will work with start-ups to address challenges in public safety and security. Ideas include radar #sensors at immigration checkpoints, and #AR glasses for paramedics.</td>
+                                                        <td class="pass">
+                                                            
+                                                                Pass
+                                                            
+                                                        </td>
+                                                    </tr>
+                                                
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            
+                        
+                    
+                
+            </div>
+
+        
+    </div>
+
+    <script>
+        function toggleSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            section.classList.toggle("show");
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

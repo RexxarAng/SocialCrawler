@@ -46,6 +46,12 @@
         .fail {
             color: red;
         }
+
+        .main-url {
+            background-color: #eee;
+            padding: 10px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -57,85 +63,83 @@
         </div>
 
         {% for main_url, data in report_data.items() %}
-            <div class="row mt-4">
+            <div class="row mt-4 main-url">
                 <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2>{{ main_url }}</h2>
-                        </div>
-                        <div class="card-body">
-                            {% for key, value in data.items() %}
-                                {% if key == 'platform' %}
-                                    {% for platform, platform_data in value.items() %}
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h3>{{ platform }}</h3>
-                                            </div>
-                                            <div class="card-body">
-                                                {% for profile_url, profile_data in platform_data.items() %}
-                                                    <div class="card">
-                                                        <div class="card-header">
-                                                            <h4>Profile: <a href="{{ profile_url }}">{{ profile_url }}</a></h4>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <table class="table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>URL</th>
-                                                                        <th>{{ platform }} Data</th>
-                                                                        <th>Appropriate</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    {% for data in profile_data %}
-                                                                        <tr>
-                                                                            <td><a href="{{ data.url }}">{{ data.url | truncate_url }}</a></td>
-                                                                            <td>{{ data.content }}</td>
-                                                                            <td class="{{ 'fail' if data.profanity_probability >= 0.5 else 'pass' }}">
-                                                                                {% if data.profanity_probability >= 0.5 %}
-                                                                                    Failed
-                                                                                {% else %}
-                                                                                    Pass
-                                                                                {% endif %}
-                                                                            </td>
-                                                                        </tr>
-                                                                    {% endfor %}
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3>{{ key }}</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>URL</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for link in value %}
-                                                        <tr>
-                                                            <td><a href="{{ link }}">{{ link }}</a></td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
+                    <h2>{{ main_url }}</h2>
                 </div>
             </div>
+
+            {% for key, value in data.items() %}
+                {% if key == 'platform' %}
+                    {% for platform, platform_data in value.items() %}
+                        <div class="row mt-4">
+                            <div class="col">
+                                <h3>{{ platform }}</h3>
+                            </div>
+                        </div>
+
+                        {% for profile_url, profile_data in platform_data.items() %}
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <h4>Profile: <a href="{{ profile_url }}">{{ profile_url }}</a></h4>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>URL</th>
+                                                <th>{{ platform }} Data</th>
+                                                <th>Appropriate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for data in profile_data %}
+                                                <tr>
+                                                    <td><a href="{{ data.url }}">{{ data.url | truncate_url }}</a></td>
+                                                    <td>{{ data.content }}</td>
+                                                    <td class="{{ 'fail' if data.profanity_probability >= 0.5 else 'pass' }}">
+                                                        {% if data.profanity_probability >= 0.5 %}
+                                                            Failed
+                                                        {% else %}
+                                                            Pass
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <div class="row mt-4">
+                        <div class="col">
+                            <h3>{{ key }}</h3>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>URL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for link in value %}
+                                        <tr>
+                                            <td><a href="{{ link }}">{{ link }}</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
         {% endfor %}
     </div>
 

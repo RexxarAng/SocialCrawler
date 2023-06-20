@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Social Media Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -48,52 +49,98 @@
     </style>
 </head>
 <body>
-    {% for main_url, data in report_data.items() %}
-        <h1>{{ main_url }}</h1>
-        {% for key, value in data.items() %}
-            {% if key == 'platform' %}
-                {% for platform, platform_data in value.items() %}
-                    <h2>{{ platform }}</h2>
-                    {% for profile_url, profile_data in platform_data.items() %}
-                        <h3>Profile:
-                            <a href="{{ profile_url }}">{{ profile_url }}</a>
-                        </h3>
-                        <table>
-                            <tr>
-                                <th>URL</th>
-                                <th>{{ platform }} Data</th>
-                                <th>Appropriate</th>
-                            </tr>
-                            {% for data in profile_data %}
-                                <tr>
-                                    <td><a href="{{ data.url }}">{{ data.url | truncate_url }}</a></td>
-                                    <td>{{ data.content }}</td>
-                                    <td class="{{ 'fail' if data.profanity_probability >= 0.5 else 'pass' }}">
-                                        {% if data.profanity_probability >= 0.5 %}
-                                            Failed
-                                        {% else %}
-                                            Pass
-                                        {% endif %}
-                                    </td>
-                                </tr>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Social Media Report</h1>
+            </div>
+        </div>
+
+        {% for main_url, data in report_data.items() %}
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>{{ main_url }}</h2>
+                        </div>
+                        <div class="card-body">
+                            {% for key, value in data.items() %}
+                                {% if key == 'platform' %}
+                                    {% for platform, platform_data in value.items() %}
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3>{{ platform }}</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                {% for profile_url, profile_data in platform_data.items() %}
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h4>Profile: <a href="{{ profile_url }}">{{ profile_url }}</a></h4>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table class="table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>URL</th>
+                                                                        <th>{{ platform }} Data</th>
+                                                                        <th>Appropriate</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% for data in profile_data %}
+                                                                        <tr>
+                                                                            <td><a href="{{ data.url }}">{{ data.url | truncate_url }}</a></td>
+                                                                            <td>{{ data.content }}</td>
+                                                                            <td class="{{ 'fail' if data.profanity_probability >= 0.5 else 'pass' }}">
+                                                                                {% if data.profanity_probability >= 0.5 %}
+                                                                                    Failed
+                                                                                {% else %}
+                                                                                    Pass
+                                                                                {% endif %}
+                                                                            </td>
+                                                                        </tr>
+                                                                    {% endfor %}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3>{{ key }}</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>URL</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for link in value %}
+                                                        <tr>
+                                                            <td><a href="{{ link }}">{{ link }}</a></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             {% endfor %}
-                        </table>
-                    {% endfor %}
-                {% endfor %}
-            {% else %}
-                <h2>{{ key }}</h2>
-                <table>
-                    <tr>
-                        <th>URL</th>
-                    </tr>
-                    {% for link in value %}
-                        <tr>
-                            <td><a href="{{ link }}">{{ link }}</a></td>
-                        </tr>
-                    {% endfor %}
-                </table>
-            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
-    {% endfor %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 </body>
 </html>

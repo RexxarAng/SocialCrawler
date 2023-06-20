@@ -87,6 +87,7 @@ class SocialMediaCrawler:
                     # Relative URL, construct absolute URL
                     href = urljoin(url, href)
                 href_domain = urlparse(href).netloc
+                # visit links within same domain recursively using DFS
                 if domain in href_domain and href not in visited_links:
                     visited_links.add(href)
                     social_media_links.update(
@@ -168,7 +169,7 @@ class SocialMediaCrawler:
             if data.get('Broken Links'):
                 ordered_data['Broken Links'] = data['Broken Links']
             if data.get('Unchecked Profile Links'):
-                ordered_data['Unchecked Profile links'] = data['Unchecked Profile Links']
+                ordered_data['Unchecked Profile Links'] = data['Unchecked Profile Links']
             if data.get('Unchecked Links'):
                 ordered_data['Unchecked Links'] = data['Unchecked Links']
 
