@@ -49,20 +49,23 @@ class TwitterCrawler:
         with open(csv_file_path, 'w', newline='', encoding='utf-8') as csv_file:
             csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             csv_writer.writeheader()
+            try:
+                # Using TwitterSearchScraper to scrape data and append tweets to list
+                for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{username}').get_items()):
+                    if i > self.max_posts:
+                        break
+                    tweet = {
+                        "date": tweet.date.isoformat(),
+                        "url": tweet.url,
+                        "content": tweet.rawContent,
+                        'profanity_probability': predict_prob([tweet.rawContent])
+                    }
+                    tweets.append(tweet)
+                    # Write the record to the CSV file
+                    csv_writer.writerow(tweet)
+            except Exception:
+                return {"success": False, "data": "No posts retrieved"}
 
-            # Using TwitterSearchScraper to scrape data and append tweets to list
-            for i, tweet in enumerate(sntwitter.TwitterSearchScraper(f'from:{username}').get_items()):
-                if i > self.max_posts:
-                    break
-                tweet = {
-                    "date": tweet.date.isoformat(),
-                    "url": tweet.url,
-                    "content": tweet.rawContent,
-                    'profanity_probability': predict_prob([tweet.rawContent])
-                }
-                tweets.append(tweet)
-                # Write the record to the CSV file
-                csv_writer.writerow(tweet)
         if not tweets:
             return {"success": False, "data": "No posts retrieved"}
 
