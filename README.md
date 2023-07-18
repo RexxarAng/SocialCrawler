@@ -15,7 +15,8 @@ The SocialCrawler is a web scraping and analysis tool designed to assess the aut
 * Download the appropriate version of chromedriver for your Chrome browser from the official website: https://chromedriver.chromium.org/home. Make sure to download the version that matches your Chrome browser version.
 * Extract the chromedriver executable from the downloaded archive.
 * Place the chromedriver executable in a directory that is included in the system's PATH environment variable.
-* Run this command ```pip install -r requirements.txt``` in the project directory
+* Install python dependencies
+  * ``pip install -r requirements.txt``
 * Update the config.json file
   * browser profile with your facebook and instagram logged in
   * Instagram username and password
